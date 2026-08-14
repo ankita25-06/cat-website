@@ -37,30 +37,35 @@ class SymptomInput(BaseModel):
 
 def query_gemini_api(api_key: str, prompt: str):
     """
-    Tries active model endpoints sequentially until one succeeds.
+    Sends requests with proper Authorization headers supporting both AQ. and AIzaSy keys.
     """
     candidate_models = [
         "gemini-2.0-flash",
-        "gemini-1.5-flash-latest",
-        "gemini-1.5-pro-latest",
-        "gemini-pro"
+        "gemini-1.5-flash",
+        "gemini-1.5-pro",
+        "gemini-1.5-flash-latest"
     ]
     
     last_error = None
 
     for model in candidate_models:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+        
         payload = {
             "contents": [{
                 "parts": [{"text": prompt}]
             }]
         }
         data = json.dumps(payload).encode("utf-8")
-        req = urllib.request.Request(
-            url,
-            data=data,
-            headers={"Content-Type": "application/json"}
-        )
+        
+        # Pass authentication in headers
+        headers = {
+            "Content-Type": "application/json",
+            "x-goog-api-key": api_key,
+            "Authorization": f"Bearer {api_key}" if api_key.startswith("AQ.") else f"Bearer {api_key}"
+        }
+
+        req = urllib.request.Request(url, data=data, headers=headers)
 
         try:
             with urllib.request.urlopen(req, timeout=15) as response:
@@ -106,7 +111,7 @@ def diagnose_cat(symptoms: SymptomInput):
                 "confidence": "Out of Scope"
             }
 
-    # Retrieve API key
+    # Retrieve API key from environment
     gemini_key = os.getenv("GEMINI_API_KEY")
     if not gemini_key:
         return {
