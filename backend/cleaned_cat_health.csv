@@ -1,0 +1,417 @@
+text,condition,record_type
+"Emphasize need to treat all dogs, cats, and ferrets in the household concurrently for ectoparasites.",Parasites,Clinical Notes
+Cat seems painful when she opens her mouth wide to yawn.,Ear Infections,Owner Observation
+Hyperthyroidism diagnosed in older cat with weight loss and vomiting.,Digestive Issues,Clinical Notes
+Cat has scaly patches on her ear tips.,Skin Irritations,Owner Observation
+"My cat vomited, then had diarrhea, now just hiding.",Digestive Issues,Owner Observation
+Cat vomits immediately after drinking water.,Digestive Issues,Owner Observation
+"Rule out toxin ingestion (plants, chemicals, medications).",Digestive Issues,Clinical Notes
+My cat has inflamed nail beds.,Skin Irritations,Owner Observation
+Re-evaluate efficacy and adjust dosage of pain medications at each follow-up.,Mobility Problems,Clinical Notes
+Prescribe ronidazole for suspected Tritrichomonas foetus infection in feline.,Parasites,Clinical Notes
+My cat's hearing seems diminished.,Ear Infections,Owner Observation
+Cat vomited 5 times in the past few hours.,Digestive Issues,Owner Observation
+My cat vomited what looked like a roundworm.,Digestive Issues,Owner Observation
+Cat has nerve damage affecting her leg.,Mobility Problems,Owner Observation
+Long-term maintenance therapy with weekly ear cleaner/medication may be required.,Ear Infections,Clinical Notes
+"Kitten failed to respond to initial dewormer, suspecting resistant strain or different parasite.",Parasites,Owner Observation
+Plasma cell pododermatitis ('pillow foot') in feline patient; consider doxycycline trial.,Skin Irritations,Clinical Notes
+Cat has lost hair around the outside of her ears from scratching.,Ear Infections,Owner Observation
+Cat has stopped perching in high places.,Mobility Problems,Owner Observation
+"Cat's claws are very long, maybe it hurts to use the scratching post.",Mobility Problems,Owner Observation
+Cat cries out in pain when yawning or eating.,Ear Infections,Owner Observation
+Cat struggles to climb onto the sofa.,Mobility Problems,Owner Observation
+Cat has crusty sores on the edges of her ear flaps.,Ear Infections,Owner Observation
+Miliary dermatitis pattern observed in feline patient; consider flea allergy vs. food allergy.,Skin Irritations,Clinical Notes
+Cat keeps rubbing her head/ears against the furniture.,Ear Infections,Owner Observation
+"Diagnosed hyperthyroidism (elevated T4) in cat with weight loss, polyphagia, vomiting.",Digestive Issues,Clinical Notes
+Cat is losing weight but eating more than usual.,Digestive Issues,Owner Observation
+Assess for potential medication side effects causing GI upset.,Digestive Issues,Clinical Notes
+My cat's ear mites seem resistant to the usual treatments.,Parasites,Owner Observation
+My cat is drooling excessively and pawing at her mouth.,Digestive Issues,Owner Observation
+"My kitten has a potbelly and isn't growing well, the breeder said she might have worms.",Parasites,Owner Observation
+"My cat brought in a mouse, now I'm worried about worms.",Parasites,Owner Observation
+"Cat has greasy, matted fur along its back.",Skin Irritations,Owner Observation
+"Recommend using Tris-EDTA containing ear cleaner prior to antibiotic application, especially for Pseudomonas.",Ear Infections,Clinical Notes
+My cat's ear infection isn't responding to the current antibiotic drops.,Ear Infections,Owner Observation
+My kitten has developed scabs behind her ears.,Skin Irritations,Owner Observation
+"My cat has small, millet-seed like scabs all over its body.",Skin Irritations,Owner Observation
+Tritrichomonas foetus testing recommended for chronic feline diarrhea.,Digestive Issues,Clinical Notes
+Consider stress as a trigger for colitis; advise environmental enrichment/behavior modification.,Digestive Issues,Clinical Notes
+"Feline patient exhibits miliary dermatitis pattern; rule out FAD, food allergy, atopy.",Skin Irritations,Clinical Notes
+Emphasize finishing the full course of medication.,Ear Infections,Clinical Notes
+My dog's ear infection came back shortly after finishing medication.,Ear Infections,Owner Observation
+Cat has hair loss above the eyes.,Skin Irritations,Owner Observation
+Cat is grooming one specific spot on her leg until it's bald.,Mobility Problems,Owner Observation
+"Lungworm (e.g., Aelurostrongylus abstrusus in cats) suspected based on respiratory signs; Baermann fecal analysis recommended.",Parasites,Clinical Notes
+Kitten has lost fur on its paws.,Skin Irritations,Owner Observation
+Ensure medication is stored and handled correctly.,Ear Infections,Clinical Notes
+Educate owner on signs of dehydration.,Digestive Issues,Clinical Notes
+My cat gags frequently without bringing anything up.,Digestive Issues,Owner Observation
+"My cat has dark wax, but the vet said it wasn't mites.",Ear Infections,Owner Observation
+"Cat is scratching her face, causing small cuts near her eyes.",Skin Irritations,Owner Observation
+My kitten has ringworm-like circles appearing on her face.,Skin Irritations,Owner Observation
+Scaling and redness on back; medicated bath advised.,Skin Irritations,Clinical Notes
+"Cat cries and flinches if I try to look in her ears, they look black inside.",Parasites,Owner Observation
+Psychogenic alopecia diagnosed in feline patient; behavioral modification and medication discussed.,Skin Irritations,Clinical Notes
+"My cat is regurgitating food (undigested, tube-shaped) right after eating.",Digestive Issues,Owner Observation
+My cat has Horner's syndrome related to an ear infection.,Ear Infections,Owner Observation
+Cat has created raw spots and scabs around her ears from scratching.,Ear Infections,Owner Observation
+My cat seems to have inflammation deep within the ear.,Ear Infections,Owner Observation
+Document date of tick removal and location.,Parasites,Clinical Notes
+"Cat is constantly scratching around the neck, causing hair loss.",Skin Irritations,Owner Observation
+Ensure owner understands frequency and duration of deworming medication.,Parasites,Clinical Notes
+Vomiting and lethargy; check for intoxication.,Digestive Issues,Clinical Notes
+"Facial nerve paralysis (lip droop, inability to blink) noted; may be temporary or permanent complication of otitis.",Ear Infections,Clinical Notes
+Cat has developed facial nerve paralysis (droopy face) on one side.,Ear Infections,Owner Observation
+Cat vomits bile mostly in the early morning before breakfast.,Digestive Issues,Owner Observation
+My cat has redness and swelling of the chin.,Skin Irritations,Owner Observation
+"Cat has a greasy feel to her coat, especially near the tail base.",Skin Irritations,Owner Observation
+"Bladder management (manual expression, catheterization) required for paralyzed patients.",Mobility Problems,Clinical Notes
+My cat has bad breath and occasionally vomits foam.,Digestive Issues,Owner Observation
+Cat’s ears have a brown discharge and bad smell.,Ear Infections,Owner Observation
+Prescribe anti-nausea medication (maropitant) for vestibular signs.,Ear Infections,Clinical Notes
+Dietary modification: increase fiber for constipation/colitis.,Digestive Issues,Clinical Notes
+Otitis with waxy debris; flush and medicate.,Ear Infections,Clinical Notes
+Cat has developed hives/welts after being outside.,Skin Irritations,Owner Observation
+My cat has crusty lesions around her eyes and nose.,Skin Irritations,Owner Observation
+Cat vomited a large hairball this morning.,Digestive Issues,Owner Observation
+Pain medication (buprenorphine) administered for abdominal discomfort.,Digestive Issues,Clinical Notes
+My cat tries to vomit frequently but only retches.,Digestive Issues,Owner Observation
+"Cat has visibly swollen joints, especially her wrists (carpi).",Mobility Problems,Owner Observation
+My cat is holding her head tilted to one side.,Ear Infections,Owner Observation
+Cat looks carefully before jumping down from even low heights.,Mobility Problems,Owner Observation
+"My cat used to love chasing laser pointers, now she just watches.",Mobility Problems,Owner Observation
+"Educate owner on recognizing signs of dehydration (lethargy, sunken eyes, tacky gums).",Digestive Issues,Clinical Notes
+Found a tick embedded in my cat's skin after she was outside.,Parasites,Owner Observation
+"Comedones present on chin (feline acne); advise topical cleansing, possible antibiotics if secondary infection.",Skin Irritations,Clinical Notes
+Cat has hair loss around the eyes and ears.,Parasites,Owner Observation
+Consider nasopharyngeal polyp in young cats with upper respiratory or ear signs.,Ear Infections,Clinical Notes
+Cat's chin has blackheads and some pimple-like sores (chin acne).,Skin Irritations,Owner Observation
+My cat vomited a plant leaf.,Digestive Issues,Owner Observation
+Cat got diarrhea after drinking milk.,Digestive Issues,Owner Observation
+I found a live flea crawling on my arm after holding the cat.,Parasites,Owner Observation
+"Cat has a swollen area on her face, like an abscess.",Skin Irritations,Owner Observation
+My cat has fleas and tapeworms.,Parasites,Owner Observation
+My cat has a droopy eyelid and unequal pupil size on the side with the bad ear.,Ear Infections,Owner Observation
+"Kitten has crusty discharge around its eyes and nose, along with skin sores.",Skin Irritations,Owner Observation
+My cat seems to gag or cough after eating.,Digestive Issues,Owner Observation
+My cat threw up clear liquid this morning and seems quiet.,Digestive Issues,Owner Observation
+"My cat has lungworm, diagnosed after chronic coughing.",Parasites,Owner Observation
+Cat has bad gas and occasional vomiting.,Digestive Issues,Owner Observation
+Cat seems less interested in playing with toys.,Mobility Problems,Owner Observation
+Megacolon diagnosed radiographically in feline patient.,Digestive Issues,Clinical Notes
+"Constipated feline; administer Miralax/lactulose and recommend increasing water intake (wet food, fountain).",Digestive Issues,Clinical Notes
+There's a foul odor coming from my cat's ears.,Ear Infections,Owner Observation
+"Cat's ears are very itchy and painful, she cries when I touch them.",Parasites,Owner Observation
+Cat has a soft tissue injury (sprain/strain).,Mobility Problems,Owner Observation
+Cat walks very slowly and cautiously.,Mobility Problems,Owner Observation
+"My cat has Toxoplasma, I'm pregnant and concerned.",Parasites,Owner Observation
+My cat tested positive for Giardia after having diarrhea.,Parasites,Owner Observation
+My cat's ear infection is resistant to multiple antibiotics.,Ear Infections,Owner Observation
+Cat developed sudden loss of balance and circling.,Ear Infections,Owner Observation
+Check FeLV/FIV status in cats with demodicosis.,Parasites,Clinical Notes
+Cat's ear canal looks very narrow.,Ear Infections,Owner Observation
+Cat reacted painfully when the vet extended her hind legs.,Mobility Problems,Owner Observation
+"My cat only poops every 3-4 days, and the stool is very hard.",Digestive Issues,Owner Observation
+My cat has developed small scabs scattered throughout her coat.,Skin Irritations,Owner Observation
+Eosinophilic plaque identified on feline abdomen; consider allergy vs. parasitic cause. Cytology performed.,Skin Irritations,Clinical Notes
+"Cat's claws seem overgrown, maybe not scratching post due to pain.",Mobility Problems,Owner Observation
+Cat developed arthritis in her elbow after an old fracture.,Mobility Problems,Owner Observation
+Cat cries out when I pick her up around her hips.,Mobility Problems,Owner Observation
+Nasopharyngeal polyp visualized extending into external ear canal in young cat.,Ear Infections,Clinical Notes
+Lichenification and hyperpigmentation in axillary regions; chronic allergic skin condition likely.,Skin Irritations,Clinical Notes
+Schedule recheck appointment in 1-2 weeks to assess initial response to pain medication.,Mobility Problems,Clinical Notes
+"My cat brings food back up almost immediately after eating, looks undigested.",Digestive Issues,Owner Observation
+"My cat has what looks like dandruff, but it moves.",Skin Irritations,Owner Observation
+Ensure prescribed volume of medication is sufficient to coat the entire ear canal.,Ear Infections,Clinical Notes
+"Cat is scratching her neck raw, right where the collar sits.",Skin Irritations,Owner Observation
+Cat has sores on her lips and tongue.,Skin Irritations,Owner Observation
+Cat has scratches and scabs around her ears from scratching.,Ear Infections,Owner Observation
+My cat has been hiding under the bed and won't eat.,Digestive Issues,Owner Observation
+Erythema and scaling on paws; soak and medicate.,Skin Irritations,Clinical Notes
+My cat has fleas even though she's an indoor cat.,Parasites,Owner Observation
+Kitten has Coccidia causing bloody diarrhea.,Parasites,Owner Observation
+Cat is sensitive to noises.,Ear Infections,Owner Observation
+Feline psychogenic alopecia suspected; rule out medical causes of pruritus first.,Skin Irritations,Clinical Notes
+Provide client education handout on managing allergic dermatitis.,Skin Irritations,Clinical Notes
+My cat has vomited several times today and is now hiding.,Digestive Issues,Owner Observation
+"My cat has rapid, involuntary eye movements (nystagmus).",Ear Infections,Owner Observation
+Cat seems deaf in one ear.,Ear Infections,Owner Observation
+My cat has really bad breath and sometimes vomits yellow foam.,Digestive Issues,Owner Observation
+"Kitten is anemic (pale gums) and lethargic, suspecting heavy flea or worm burden.",Parasites,Owner Observation
+My cat vomited pink-tinged fluid.,Digestive Issues,Owner Observation
+My cat has developed a lump that feels fatty under the skin.,Skin Irritations,Owner Observation
+Cat is irritable or aggressive when touched in certain areas.,Mobility Problems,Owner Observation
+My cat's eyes are darting back and forth rapidly.,Ear Infections,Owner Observation
+"History of potential toxin exposure (e.g., antifreeze, rodenticide, human medications). Advise immediate evaluation.",Digestive Issues,Clinical Notes
+Cat is excessively grooming her front legs.,Skin Irritations,Owner Observation
+"Cat has been chewing her hind legs, leaving raw spots.",Skin Irritations,Owner Observation
+Confirm owner compliance with preventative medications.,Parasites,Clinical Notes
+Cat is overgrooming areas near painful joints.,Mobility Problems,Owner Observation
+My cat has been hiding and refusing food for a day.,Digestive Issues,Owner Observation
+Educate owner on signs of worsening neurological function.,Mobility Problems,Clinical Notes
+Cat is suddenly unable to use her back legs and is crying in pain.,Mobility Problems,Owner Observation
+Suspect Aelurostrongylus abstrusus (feline lungworm) based on respiratory signs. Baermann fecal analysis confirms L1 larvae.,Parasites,Clinical Notes
+"Cat is hiding, seems lethargic, and occasionally shakes her head.",Ear Infections,Owner Observation
+"Kitten may have resistant parasites or Tritrichomonas, further testing needed.",Parasites,Owner Observation
+My cat has developed scabs along her spine.,Skin Irritations,Owner Observation
+"Cat is lethargic and hiding, along with the head shaking.",Ear Infections,Owner Observation
+"My cat used to sleep on the top bunk, now she stays on the floor.",Mobility Problems,Owner Observation
+"My cat stopped using the litter box, maybe it's hard to get into.",Mobility Problems,Owner Observation
+Cat is less playful than usual.,Mobility Problems,Owner Observation
+Cat has scratched the fur off behind and below her ears.,Ear Infections,Owner Observation
+Cat hesitates before jumping down.,Mobility Problems,Owner Observation
+Cat has blisters appearing on her skin.,Skin Irritations,Owner Observation
+Clip hair around affected areas to improve topical medication contact.,Skin Irritations,Clinical Notes
+Cat has a non-healing sore on her ear flap.,Skin Irritations,Owner Observation
+Cat has started pooping outside the litter box on the rug.,Mobility Problems,Owner Observation
+"Ortolani sign positive, indicating hip laxity.",Mobility Problems,Clinical Notes
+Radiographs show segmental dilation of small intestine with plication; high suspicion for linear foreign body.,Digestive Issues,Clinical Notes
+Repeat fecal examination post-treatment to confirm parasite eradication.,Digestive Issues,Clinical Notes
+My cat has a swollen lower lip.,Skin Irritations,Owner Observation
+"My cat passed several long, white, round worms in her stool.",Parasites,Owner Observation
+My cat has fleas resistant to the spot-on treatment I used.,Parasites,Owner Observation
+Cat seems to have nerve damage in her front leg after an injury.,Mobility Problems,Owner Observation
+"My kitten has fleas, I saw them jumping.",Parasites,Owner Observation
+"Skin fragility syndrome in older cat; handle gently, check for underlying conditions (hyperadrenocorticism, diabetes).",Skin Irritations,Clinical Notes
+"Educate owner on parasite transmission routes (fecal-oral, vectors, transplacental, transmammary).",Parasites,Clinical Notes
+My cat doesn't seem to hear me approaching from one side.,Ear Infections,Owner Observation
+"Cat vomited something that looked dark brown, like old blood.",Digestive Issues,Owner Observation
+"Cat has itchy, crusty lesions on the bridge of her nose.",Skin Irritations,Owner Observation
+Pain elicited on opening mouth fully; may indicate TMJ involvement or referred pain from otitis media.,Ear Infections,Clinical Notes
+Cat’s ears are hot and have a yeasty smell.,Ear Infections,Owner Observation
+"Recommend environmental modifications (ramps, non-slip flooring, raised feeders, orthopedic bed).",Mobility Problems,Clinical Notes
+My cat has developed swelling on her lip.,Skin Irritations,Owner Observation
+Fecal PCR for Tritrichomonas foetus recommended for refractory feline diarrhea.,Digestive Issues,Clinical Notes
+Pain medication trial initiated to assess response.,Mobility Problems,Clinical Notes
+My cat vomited something that looked like a small worm.,Parasites,Owner Observation
+"Cat moves very deliberately, almost like she's walking on eggshells.",Mobility Problems,Owner Observation
+My cat's fur along her spine looks greasy and matted.,Skin Irritations,Owner Observation
+Cat is rubbing the side of her head on the floor and furniture.,Ear Infections,Owner Observation
+"Provide detailed estimate covering costs of diagnostics (radiographs, bloodwork, MRI) and potential treatments (medications, surgery, rehab).",Mobility Problems,Clinical Notes
+Cat is grooming her belly so much it's almost bald.,Parasites,Owner Observation
+"Skin fragility syndrome noted in older cat; handle with care, check for hyperadrenocorticism.",Skin Irritations,Clinical Notes
+Plasma cell pododermatitis ('pillow foot') diagnosed in cat.,Skin Irritations,Clinical Notes
+Cat has difficulty grooming her back.,Mobility Problems,Owner Observation
+"Melena reported by owner; confirmed on rectal thermometer. Indicates upper GI bleeding. Start gastroprotectants (famotidine/omeprazole, sucralfate).",Digestive Issues,Clinical Notes
+My cat has a drooping eyelid and smaller pupil on the same side as the head tilt.,Ear Infections,Owner Observation
+"Dog strains to defecate, only producing small amounts of liquid.",Digestive Issues,Owner Observation
+Seborrhea oleosa diagnosed; recommend medicated shampoo with benzoyl peroxide.,Skin Irritations,Clinical Notes
+My cat has a history of ear polyps.,Ear Infections,Owner Observation
+"Discuss potential side effects of medications (e.g., steroids, Apoquel).",Skin Irritations,Clinical Notes
+Feline panleukopenia suspected in unvaccinated kitten with severe V/D.,Digestive Issues,Clinical Notes
+"Cat’s back has pink, weepy sores from scratching.",Skin Irritations,Owner Observation
+"Cat keeps retching like she needs to cough up a hairball, but doesn't.",Digestive Issues,Owner Observation
+"My cat seems dizzy, stumbling and walking in circles.",Ear Infections,Owner Observation
+Cat seems painful when the vet manipulates her legs.,Mobility Problems,Owner Observation
+My cat misses jumps sometimes.,Mobility Problems,Owner Observation
+"Cat vomits undigested food about once a week, seems fine otherwise.",Digestive Issues,Owner Observation
+My cat vomited a worm.,Digestive Issues,Owner Observation
+My cat has ear mites again.,Parasites,Owner Observation
+Cat is constantly licking at her knee joint.,Mobility Problems,Owner Observation
+Cat likely has a muscle sprain or strain causing limping.,Mobility Problems,Owner Observation
+"Cat is scratching near, but not directly in, the ear.",Ear Infections,Owner Observation
+Cat has a middle ear infection causing neurological signs.,Ear Infections,Owner Observation
+Cat has developed a head tilt suddenly.,Ear Infections,Owner Observation
+My cat has difficulty swallowing.,Digestive Issues,Owner Observation
+Educate owner on recognizing early signs of skin infection.,Skin Irritations,Clinical Notes
+Cat vomited what looks like coffee grounds.,Digestive Issues,Owner Observation
+Cat's paws are swollen and red.,Skin Irritations,Owner Observation
+"Medical management of CCL tear includes weight loss, activity modification, NSAIDs, and physical therapy.",Mobility Problems,Clinical Notes
+Kitten has persistent diarrhea despite deworming.,Parasites,Owner Observation
+My cat vomited pinkish foam.,Digestive Issues,Owner Observation
+Cat suddenly refuses to eat her usual food.,Digestive Issues,Owner Observation
+"My kitten is covered in fleas, they are crawling all over.",Parasites,Owner Observation
+My cat has symmetrical hair loss on both flanks.,Skin Irritations,Owner Observation
+Cat has crusty ear tips.,Ear Infections,Owner Observation
+My cat has bald patches above her eyes.,Skin Irritations,Owner Observation
+"Chronic history of intermittent vomiting and weight loss in older feline. Differentials include IBD, lymphoma, hyperthyroidism.",Digestive Issues,Clinical Notes
+"Chronic changes noted in ear canal: hyperplasia, stenosis, calcification.",Ear Infections,Clinical Notes
+Monitor urine output as indicator of hydration and kidney function.,Digestive Issues,Clinical Notes
+My cat is sensitive to being petted along her back.,Skin Irritations,Owner Observation
+My cat has both fleas and tapeworm segments.,Parasites,Owner Observation
+Cat has thinning hair around her eyes and face.,Parasites,Owner Observation
+"Chronic intermittent vomiting in feline; consider IBD, food allergy, lymphoma.",Digestive Issues,Clinical Notes
+"My cat licks her belly raw, especially after eating certain foods.",Skin Irritations,Owner Observation
+My cat started shaking her head after a groomer visit.,Ear Infections,Owner Observation
+My cat has what looks like walking dandruff.,Parasites,Owner Observation
+Demonstrate proper ear cleaning technique and medication instillation to owner.,Ear Infections,Clinical Notes
+OFA radiographs submitted for hip/elbow certification.,Mobility Problems,Clinical Notes
+My cat doesn't jump onto the furniture anymore.,Mobility Problems,Owner Observation
+"My cat has fleas, causing miliary dermatitis.",Parasites,Owner Observation
+"Aortic thromboembolism (ATE) suspected in cat with acute hind limb paralysis, pain, cold extremities, absent femoral pulses.",Mobility Problems,Clinical Notes
+Monitor for adverse reactions to antiparasitic medications.,Parasites,Clinical Notes
+"PennHIP distraction index (DI) measured at 0.6 (right) and 0.7 (left), indicating significant hip laxity.",Mobility Problems,Clinical Notes
+Cat has painful swelling around multiple joints.,Mobility Problems,Owner Observation
+My cat seems to have fleas that aren't killed by her usual spot-on.,Parasites,Owner Observation
+Dog has difficulty posturing to urinate or defecate.,Mobility Problems,Owner Observation
+"Kitten is sneezing and has discharge, could it be lungworms?",Parasites,Owner Observation
+Cat is licking the fur off her legs.,Skin Irritations,Owner Observation
+My cat has bumps under the skin that can be felt but not easily seen.,Skin Irritations,Owner Observation
+Utilize Canine Brief Pain Inventory (CBPI) or Feline Musculoskeletal Pain Index (FMPI) to monitor treatment response.,Mobility Problems,Clinical Notes
+My new kitten has a really round belly and doesn't seem to be growing much.,Parasites,Owner Observation
+Cat has difficulty navigating stairs.,Mobility Problems,Owner Observation
+"My cat's fur looks dull and unkempt, and she has flakes.",Skin Irritations,Owner Observation
+Lichenification and hyperpigmentation of axillary and inguinal regions; chronic allergic changes.,Skin Irritations,Clinical Notes
+Kitten has hookworms according to the fecal test.,Parasites,Owner Observation
+Cat has inflammation and discharge around her nail beds.,Skin Irritations,Owner Observation
+Cat keeps vomiting small amounts of bile.,Digestive Issues,Owner Observation
+Dog has developed resistance to previous ear medications.,Ear Infections,Owner Observation
+"Document type of tick removed, date, and location on patient.",Parasites,Clinical Notes
+Skin fragility noted; test for FIV/FeLV in feline patient.,Skin Irritations,Clinical Notes
+Cat has started eliminating outside the litter box.,Mobility Problems,Owner Observation
+My cat fights me and cries when I try to put ear drops in.,Ear Infections,Owner Observation
+My cat has bumps along her spine.,Skin Irritations,Owner Observation
+Cat is losing weight despite having a good appetite.,Digestive Issues,Owner Observation
+Tympanic membrane appears ruptured on otoscopic exam. Avoid potentially ototoxic cleaners/medications.,Ear Infections,Clinical Notes
+Ensure appropriate medication volume is prescribed.,Ear Infections,Clinical Notes
+Systemic antibiotics indicated for otitis media/interna or severe otitis externa.,Ear Infections,Clinical Notes
+"Cat's face looks droopy on one side, started with the ear trouble.",Ear Infections,Owner Observation
+"Review current medications for potential GI side effects (e.g., NSAIDs, steroids, certain antibiotics).",Digestive Issues,Clinical Notes
+Use selamectin/sarolaner (Revolution Plus) for broad-spectrum feline parasite control.,Parasites,Clinical Notes
+Ensure owner understands medication schedule and potential side effects.,Mobility Problems,Clinical Notes
+Educate owner on parasite life cycles and prevention strategies.,Parasites,Clinical Notes
+Abdominocentesis yielded serosanguinous fluid; cytology shows septic inflammation. Emergency surgery indicated.,Digestive Issues,Clinical Notes
+"Cat is scratching the area below her ear, not directly inside.",Ear Infections,Owner Observation
+"Cat has decreased appetite, possibly due to chronic pain.",Mobility Problems,Owner Observation
+Document size and location of aural hematoma.,Ear Infections,Clinical Notes
+My cat shakes her head violently right after I put the ear drops in.,Ear Infections,Owner Observation
+Cat has swollen joints.,Mobility Problems,Owner Observation
+My cat is drinking tons of water and vomited twice yesterday.,Digestive Issues,Owner Observation
+Cat seems completely deaf in the affected ear.,Ear Infections,Owner Observation
+"Cat moves with a stiff, hunched posture.",Mobility Problems,Owner Observation
+Cat is licking a specific joint excessively.,Mobility Problems,Owner Observation
+Deep pyoderma with draining tracts; culture and sensitivity indicated.,Skin Irritations,Clinical Notes
+"Kitten has pale gums and is very sleepy, worried about fleas.",Parasites,Owner Observation
+"Cat has symmetrical hair loss on her flanks, no apparent itching.",Skin Irritations,Owner Observation
+Feline acne present on chin; comedones and secondary infection noted.,Skin Irritations,Clinical Notes
+My senior cat hasn't pooped in four days and seems uncomfortable.,Digestive Issues,Owner Observation
+Cat seems overly sensitive to loud noises lately.,Ear Infections,Owner Observation
+My cat has sores in the corners of her mouth.,Skin Irritations,Owner Observation
+Document location and estimated size/volume of aural hematoma.,Ear Infections,Clinical Notes
+"Cat isn't grooming her hindquarters well, fur looks matted.",Mobility Problems,Owner Observation
+Cat has hair loss and redness between the toes.,Skin Irritations,Owner Observation
+"Cat is scratching under her chin, causing sores and hair loss.",Skin Irritations,Owner Observation
+My cat is drinking excessive amounts of water and vomiting frequently.,Digestive Issues,Owner Observation
+Use ear wick or packing with medication for severe stenosis.,Ear Infections,Clinical Notes
+Ruptured tympanic membrane suspected; avoid ototoxic medications.,Ear Infections,Clinical Notes
+My cat scratches herself raw around the collar area.,Skin Irritations,Owner Observation
+My cat has flaky skin that seems to move when you watch it closely.,Parasites,Owner Observation
+"Cat keeps gagging like she has a hairball, but nothing comes out.",Digestive Issues,Owner Observation
+My cat has chronic diarrhea that responds temporarily to antibiotics.,Digestive Issues,Owner Observation
+Anal sacculitis/abscess causing pain on defecation.,Digestive Issues,Clinical Notes
+Kitten's fecal test showed hookworm eggs.,Parasites,Owner Observation
+"My cat has chronic diarrhea, improves with antibiotics but returns.",Digestive Issues,Owner Observation
+"The fur on my cat's tail base is thinning, and the skin looks irritated.",Skin Irritations,Owner Observation
+Cat meows loudly if I accidentally brush against her lower back.,Mobility Problems,Owner Observation
+Cat has neurological signs attributed to a middle ear infection.,Ear Infections,Owner Observation
+Continue otic medications for at least 1 week past clinical and cytological resolution.,Ear Infections,Clinical Notes
+My cat is drooling a lot and seems to have trouble swallowing.,Digestive Issues,Owner Observation
+"Cat suddenly lost use of her back legs, they feel cold.",Mobility Problems,Owner Observation
+"Cat shakes her head a lot and there's dark, crumbly stuff in her ears.",Parasites,Owner Observation
+Prescribe anti-diarrheal medication (loperamide) cautiously.,Digestive Issues,Clinical Notes
+"Cat has a poor appetite, which might be due to chronic joint pain.",Mobility Problems,Owner Observation
+"Document all findings, recommendations, and communications.",Skin Irritations,Clinical Notes
+"My cat vomits clear or white foam, usually in the morning.",Digestive Issues,Owner Observation
+"Cat finally coughed up a huge, dense hairball.",Digestive Issues,Owner Observation
+My cat has dandruff-like flakes all over her black fur.,Skin Irritations,Owner Observation
+My cat vomited something that looked like a grain of rice.,Parasites,Owner Observation
+"My cat vomits white foam occasionally, unrelated to meals.",Digestive Issues,Owner Observation
+Check FeLV/FIV status in cats with unusual or severe skin condition.,Skin Irritations,Clinical Notes
+My cat started shaking her head right after coming back from the groomer.,Ear Infections,Owner Observation
+"Discuss potential complications of ear surgery (facial nerve paralysis, hearing loss).",Ear Infections,Clinical Notes
+"My cat's ears have a really strong, yeasty smell.",Ear Infections,Owner Observation
+"Ensure owner understands how to properly store (e.g., refrigerate) and warm medications if needed.",Ear Infections,Clinical Notes
+Cat flinches and tensees up when I touch her belly.,Digestive Issues,Owner Observation
+Cat no longer jumps up onto counters or windowsills.,Mobility Problems,Owner Observation
+Demonstrate proper technique for administering oral liquid medications or pilling.,Digestive Issues,Clinical Notes
+Esophagostomy tube placed for long-term nutritional support in anorexic feline patient.,Digestive Issues,Clinical Notes
+"Primary secretory otitis media (PSOM) suspected; bulging, opaque TM noted. Myringotomy may be indicated.",Ear Infections,Clinical Notes
+Cat has suddenly become very picky about food.,Digestive Issues,Owner Observation
+My cat has tapeworm segments appearing intermittently.,Parasites,Owner Observation
+"Kitten is sneezing frequently, could it be a nasal parasite?",Parasites,Owner Observation
+My cat is walking with her head tilted sharply to the right.,Ear Infections,Owner Observation
+Cat growls or hisses when I try to pet her lower back or hips.,Mobility Problems,Owner Observation
+"Feline panleukopenia virus antigen test positive in unvaccinated kitten with severe leukopenia, V/D.",Digestive Issues,Clinical Notes
+Cat has vestibular signs that started suddenly.,Ear Infections,Owner Observation
+My cat has resistant ear mites.,Parasites,Owner Observation
+"My cat hunts mice, should I be worried about worms?",Parasites,Owner Observation
+My cat has inflammation deep in the ear canal.,Ear Infections,Owner Observation
+Educate owner on proper ear medication administration technique.,Ear Infections,Clinical Notes
+My indoor-only cat somehow got fleas.,Parasites,Owner Observation
+"My cat has intermittent constipation, goes several days without defecating.",Digestive Issues,Owner Observation
+My cat's skin irritation (miliary dermatitis) is caused by fleas.,Parasites,Owner Observation
+"My cat has Toxoplasma antibodies, need to discuss risks.",Parasites,Owner Observation
+"Monitor for fever, lethargy, anorexia indicating systemic involvement.",Ear Infections,Clinical Notes
+"Palpable medial buttress (fibrosis of joint capsule) present in left stifle, indicative of chronic CCL condition.",Mobility Problems,Clinical Notes
+Kitten still has diarrhea despite multiple deworming treatments.,Parasites,Owner Observation
+Instruct owner on proper administration of oral medications.,Digestive Issues,Clinical Notes
+Cat has arthritis secondary to previous injury.,Mobility Problems,Owner Observation
+"Kitten has severe, bloody diarrhea caused by Coccidia.",Parasites,Owner Observation
+Strategic deworming protocol recommended for puppies/kittens.,Parasites,Clinical Notes
+Cat has shown no interest in food for 24 hours.,Digestive Issues,Owner Observation
+My cat seems off balance and walks in circles sometimes.,Ear Infections,Owner Observation
+Cat shows pain when her spine is gently pressed.,Mobility Problems,Owner Observation
+Cat is hiding more and interacting less.,Mobility Problems,Owner Observation
+My cat started peeing next to the litter box instead of climbing in.,Mobility Problems,Owner Observation
+Intradermal allergy testing indicated for non-seasonal pruritus.,Skin Irritations,Clinical Notes
+My cat was diagnosed with lungworm after chronic respiratory signs.,Parasites,Owner Observation
+"My cat had ear polyps removed before, worried they are back.",Ear Infections,Owner Observation
+Found a flea on myself after petting the cat.,Parasites,Owner Observation
+My cat has sores appearing on her paw pads.,Skin Irritations,Owner Observation
+Cat has pain when her spine is palpated.,Mobility Problems,Owner Observation
+"Implement routine deworming schedule for puppies/kittens (e.g., starting at 2 weeks, repeat every 2 weeks).",Parasites,Clinical Notes
+Papules and erythema on chest; medicated wash prescribed.,Skin Irritations,Clinical Notes
+Cat has diarrhea after getting into the dog's food.,Digestive Issues,Owner Observation
+"Impacted and infected anal sacs causing pain and reluctance to defecate. Expressed sacs, infuse antibiotic ointment.",Digestive Issues,Clinical Notes
+"Advise owner on modifications like using carpet runners, ramps instead of stairs, and avoiding slippery surfaces.",Mobility Problems,Clinical Notes
+Cat has vomited multiple times in the last hour.,Digestive Issues,Owner Observation
+Adjust medication dosages as needed.,Mobility Problems,Clinical Notes
+Cat's skin seems very thin and tears easily.,Skin Irritations,Owner Observation
+Pruritic sores on chest; medicated bath recommended.,Skin Irritations,Clinical Notes
+Cat spends most of her time sleeping in secluded spots.,Mobility Problems,Owner Observation
+"Kitten has flaky skin, like bad dandruff.",Skin Irritations,Owner Observation
+"Cat is excessively grooming her belly, making it bald.",Parasites,Owner Observation
+My Siamese cat is developing crusty lesions on her ear tips and nose.,Skin Irritations,Owner Observation
+"Recommend medicated shampoo (e.g., chlorhexidine, ketoconazole) based on cytology findings.",Skin Irritations,Clinical Notes
+My cat has Giardia and needs medication.,Parasites,Owner Observation
+"Cat has tiny scabs all over her back, feels like sandpaper.",Parasites,Owner Observation
+Implement long-term maintenance protocol involving weekly cleaning and application of topical steroid.,Ear Infections,Clinical Notes
+"Cat has chronic intermittent vomiting, maybe once or twice a week.",Digestive Issues,Owner Observation
+My cat vomited part of a houseplant leaf.,Digestive Issues,Owner Observation
+Cat hasn't touched her food in over 24 hours.,Digestive Issues,Owner Observation
+My cat keeps getting tapeworms even though I treat her.,Parasites,Owner Observation
+My cat has recurrent ear mite infestations.,Parasites,Owner Observation
+"Cat is constipated, passing very hard, dry stools.",Digestive Issues,Owner Observation
+My kitten has lost the fur on the bridge of her nose.,Skin Irritations,Owner Observation
+"Instill long-acting ear medication (e.g., Claro, Osurnia) in clinic.",Ear Infections,Clinical Notes
+"Cat has scabs all over her body, especially her back and neck.",Parasites,Owner Observation
+My older dog is constipated and strains to defecate.,Digestive Issues,Owner Observation
+"Discontinue potentially offending medication (e.g., new antibiotic) and monitor for resolution of GI signs.",Digestive Issues,Clinical Notes
+Noticed bright red blood streaks in my cat's poop.,Digestive Issues,Owner Observation
+Cat developed a sudden head tilt overnight.,Ear Infections,Owner Observation
+Cat seems painful in her abdomen when I pick her up.,Digestive Issues,Owner Observation
+My cat has developed bald patches behind her ears.,Skin Irritations,Owner Observation
+Cat has excessive flatulence and occasional vomiting.,Digestive Issues,Owner Observation
+My cat has roundworms visible in her stool.,Parasites,Owner Observation
+Cat has sores inside her mouth and drools excessively.,Skin Irritations,Owner Observation
+"Educate owner on signs of IVDD progression (worsening weakness, loss of bladder control, loss of deep pain).",Mobility Problems,Clinical Notes
+My cat won't let me clean her ears.,Ear Infections,Owner Observation
+Cat has scaly skin on her back.,Skin Irritations,Owner Observation
+Cat has hypertrophic osteodystrophy.,Mobility Problems,Owner Observation
+Fecal flotation via centrifugation positive for Toxocara cati eggs (+++).,Parasites,Clinical Notes
+My cat's skin twitches along her back and she suddenly runs off.,Skin Irritations,Owner Observation
+Cat's ear canal looks extremely narrow and difficult to see into.,Ear Infections,Owner Observation
+Cat is shaking her head and scratching furiously behind her ears; they look dirty inside.,Parasites,Owner Observation
+Monitor urine output (>1-2 ml/kg/hr) as indicator of adequate perfusion and hydration.,Digestive Issues,Clinical Notes
+"My cat has dark ear wax, but the vet ruled out mites.",Ear Infections,Owner Observation
+My cat has Horner's syndrome secondary to otitis media.,Ear Infections,Owner Observation
+"Cat is straining in the litter box, passing small, rock-hard feces.",Digestive Issues,Owner Observation
+My cat licks her fur off in stripes.,Skin Irritations,Owner Observation
+"Cat has had soft, mushy stool for the past two days.",Digestive Issues,Owner Observation
+My cat paws at her ear after I apply the medication.,Ear Infections,Owner Observation
+"Pulled a fat, grey tick off my cat's neck after she came inside.",Parasites,Owner Observation
+"Cat is excessively grooming, leading to thin fur.",Skin Irritations,Owner Observation
+Chronic otitis externa has led to severe hyperplastic changes and calcification of vertical canal.,Ear Infections,Clinical Notes
+"Feline patient presents with acute onset hind limb paresis, vocalization, cold/cyanotic paws, absent femoral pulses. High suspicion for ATE.",Mobility Problems,Clinical Notes
