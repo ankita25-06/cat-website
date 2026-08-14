@@ -10,8 +10,9 @@ app = FastAPI()
 # 1. Initialize the Gemini Client
 # (Replace the string below with your actual API key from AI Studio)
 
-client = genai.Client(api_key="AQ.Ab8RN6IUPaqOWC3ZahXqrGM1j73ctkvlqGDKK_MmVwckaly16w")
 
+gemini_key = os.getenv("AQ.Ab8RN6IUPaqOWC3ZahXqrGM1j73ctkvlqGDKK_MmVwckaly16w")
+client = genai.Client(api_key=gemini_key)
 try:
     print("--- AVAILABLE GEMINI MODELS ---")
     for m in client.models.list():
@@ -96,7 +97,7 @@ def diagnose_cat(symptoms: SymptomInput):
 
     try:
         response = client.models.generate_content(
-            model="gemini-flash-latest",
+            model="gemini-2.5-flash",
             contents=system_prompt,
         )
         return {
@@ -106,6 +107,6 @@ def diagnose_cat(symptoms: SymptomInput):
     except Exception as e:
         print(f"Gemini API Error: {e}")
         return {
-            "prediction": "Unable to complete AI analysis at this moment. Please consult a veterinarian directly.",
+            "prediction": f"API Error: {str(e)}",
             "confidence": "System Error"
         }
