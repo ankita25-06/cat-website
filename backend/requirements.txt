@@ -3,3 +3,4 @@ uvicorn
 pydantic
 pandas
 google-genai
+groq
