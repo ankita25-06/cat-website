@@ -8,7 +8,7 @@ from google import genai
 app = FastAPI()
 
 # Read the API key securely from the environment variable (Render / Cloud will provide this)
-gemini_key = os.getenv("AQ.Ab8RN6Kbc2nJUM5tJfwPgN6oHczlEfcKRY0OH_ppm3EtK75Axg")
+gemini_key = os.getenv("AQ.Ab8RN6IUPaqOWC3ZahXqrGM1j73ctkvlqGDKK_MmVwckaly16w")
 client = genai.Client(api_key=gemini_key)
 
 try:
