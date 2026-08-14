@@ -1,9 +1,11 @@
 import os
+import json
+import urllib.request
+import urllib.error
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
-from google import genai
 
 app = FastAPI()
 
@@ -15,32 +17,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 1. Initialize GenAI Client
-gemini_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=gemini_key)
-
-# 2. Find the active default model from the account
-active_model = "gemini-1.5-flash"
-try:
-    print("--- DETECTING AVAILABLE GEMINI MODELS ---")
-    available_models = []
-    for m in client.models.list():
-        print(f"Found: {m.name}")
-        available_models.append(m.name)
-    
-    # Pick the best available model automatically
-    for candidate in ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-2.0-flash"]:
-        for model in available_models:
-            if candidate in model:
-                active_model = model
-                break
-        if active_model != "gemini-1.5-flash":
-            break
-
-    print(f"--- ACTIVE MODEL SELECTED: {active_model} ---")
-except Exception as e:
-    print(f"Could not list models: {e}")
-
 # Load breed information for the Breed Explorer
 try:
     breeds_df = pd.read_csv("cat_breeds_summary.csv")
@@ -50,10 +26,7 @@ except Exception as e:
 
 @app.get("/")
 def home():
-    return {
-        "message": "Welcome to the Cat Health and Breed API",
-        "active_model": active_model
-    }
+    return {"message": "Welcome to the Cat Health and Breed API"}
 
 @app.get("/api/breeds")
 def get_all_breeds():
@@ -61,6 +34,49 @@ def get_all_breeds():
 
 class SymptomInput(BaseModel):
     description: str
+
+def query_gemini_api(api_key: str, prompt: str):
+    """
+    Tries active model endpoints sequentially until one succeeds.
+    """
+    candidate_models = [
+        "gemini-2.0-flash",
+        "gemini-1.5-flash-latest",
+        "gemini-1.5-pro-latest",
+        "gemini-pro"
+    ]
+    
+    last_error = None
+
+    for model in candidate_models:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+        payload = {
+            "contents": [{
+                "parts": [{"text": prompt}]
+            }]
+        }
+        data = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(
+            url,
+            data=data,
+            headers={"Content-Type": "application/json"}
+        )
+
+        try:
+            with urllib.request.urlopen(req, timeout=15) as response:
+                result = json.loads(response.read().decode("utf-8"))
+                text_response = result["candidates"][0]["content"]["parts"][0]["text"]
+                return text_response, model
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode("utf-8")
+            print(f"Model {model} failed ({e.code}): {error_body}")
+            last_error = f"{model} returned {e.code}: {error_body}"
+            continue
+        except Exception as e:
+            last_error = str(e)
+            continue
+
+    raise Exception(f"All candidate models failed. Details: {last_error}")
 
 @app.post("/api/diagnose")
 def diagnose_cat(symptoms: SymptomInput):
@@ -90,38 +106,43 @@ def diagnose_cat(symptoms: SymptomInput):
                 "confidence": "Out of Scope"
             }
 
-    # --- 2. Intelligent Feline Diagnostic via Gemini ---
+    # Retrieve API key
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    if not gemini_key:
+        return {
+            "prediction": "Error: GEMINI_API_KEY environment variable is not configured on the server.",
+            "confidence": "Config Error"
+        }
+
+    # --- 2. Build Structured Prompt ---
     system_prompt = f"""
-    You are an expert feline veterinary triage assistant.
-    A cat owner describes their cat's symptoms as follows:
-    "{user_text}"
+You are an expert feline veterinary triage assistant.
+A cat owner describes their cat's symptoms as follows:
+"{user_text}"
 
-    Provide a clear, structured response using exactly this layout:
+Provide a clear, structured response using exactly this layout:
 
-    🐾 **Likely Condition:** [Name of the condition or health category]
+🐾 **Likely Condition:** [Name of the condition or health category]
 
-    🔍 **Symptom Insights:** [1-2 concise sentences explaining why these symptoms happen]
+🔍 **Symptom Insights:** [1-2 concise sentences explaining why these symptoms happen]
 
-    🌿 **Supportive Home Care & Remedies:** 
-    - [Safe, immediate comfort measure or remedy, e.g., gentle hydration, warm bland food, quiet recovery space]
-    - [Practical monitoring tip]
+🌿 **Supportive Home Care & Remedies:** 
+- [Safe, immediate comfort measure or remedy, e.g., gentle hydration, warm bland food, quiet recovery space]
+- [Practical monitoring tip]
 
-    🚨 **When to See a Vet:** [Key red flag warning signs requiring urgent clinical care]
+🚨 **When to See a Vet:** [Key red flag warning signs requiring urgent clinical care]
 
-    Keep the tone empathetic, concise, and easy to read. Do not recommend prescription drugs.
-    """
+Keep the tone empathetic, concise, and easy to read. Do not recommend prescription drugs.
+"""
 
     try:
-        response = client.models.generate_content(
-            model=active_model,
-            contents=system_prompt,
-        )
+        diagnosis_text, working_model = query_gemini_api(gemini_key, system_prompt)
         return {
-            "prediction": response.text.strip(),
-            "confidence": f"AI Health Insight ({active_model})"
+            "prediction": diagnosis_text.strip(),
+            "confidence": f"AI Health Insight ({working_model})"
         }
     except Exception as e:
-        print(f"Gemini API Error: {e}")
+        print(f"Gemini Request Error: {e}")
         return {
             "prediction": f"API Error: {str(e)}",
             "confidence": "System Error"
