@@ -7,18 +7,6 @@ from google import genai
 
 app = FastAPI()
 
-# 1. Fetch the API key using the environment variable NAME:
-gemini_key = os.getenv("GEMINI_API_KEY")
-client = genai.Client(api_key=gemini_key)
-
-try:
-    print("--- AVAILABLE GEMINI MODELS ---")
-    for m in client.models.list():
-        print(m.name)
-    print("-------------------------------")
-except Exception as e:
-    print(f"Could not list models: {e}")
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -26,6 +14,32 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 1. Initialize GenAI Client
+gemini_key = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=gemini_key)
+
+# 2. Find the active default model from the account
+active_model = "gemini-1.5-flash"
+try:
+    print("--- DETECTING AVAILABLE GEMINI MODELS ---")
+    available_models = []
+    for m in client.models.list():
+        print(f"Found: {m.name}")
+        available_models.append(m.name)
+    
+    # Pick the best available model automatically
+    for candidate in ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-2.0-flash"]:
+        for model in available_models:
+            if candidate in model:
+                active_model = model
+                break
+        if active_model != "gemini-1.5-flash":
+            break
+
+    print(f"--- ACTIVE MODEL SELECTED: {active_model} ---")
+except Exception as e:
+    print(f"Could not list models: {e}")
 
 # Load breed information for the Breed Explorer
 try:
@@ -36,7 +50,10 @@ except Exception as e:
 
 @app.get("/")
 def home():
-    return {"message": "Welcome to the Cat Health and Breed API"}
+    return {
+        "message": "Welcome to the Cat Health and Breed API",
+        "active_model": active_model
+    }
 
 @app.get("/api/breeds")
 def get_all_breeds():
@@ -96,12 +113,12 @@ def diagnose_cat(symptoms: SymptomInput):
 
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model=active_model,
             contents=system_prompt,
         )
         return {
             "prediction": response.text.strip(),
-            "confidence": "AI Health Insight (Google Gemini)"
+            "confidence": f"AI Health Insight ({active_model})"
         }
     except Exception as e:
         print(f"Gemini API Error: {e}")
