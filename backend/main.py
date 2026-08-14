@@ -7,12 +7,10 @@ from google import genai
 
 app = FastAPI()
 
-# 1. Initialize the Gemini Client
-# (Replace the string below with your actual API key from AI Studio)
-
-
-gemini_key = os.getenv("AQ.Ab8RN6IUPaqOWC3ZahXqrGM1j73ctkvlqGDKK_MmVwckaly16w")
+# 1. Fetch the API key using the environment variable NAME:
+gemini_key = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=gemini_key)
+
 try:
     print("--- AVAILABLE GEMINI MODELS ---")
     for m in client.models.list():
@@ -34,6 +32,7 @@ try:
     breeds_df = pd.read_csv("cat_breeds_summary.csv")
 except Exception as e:
     print(f"Error loading breeds dataset: {e}")
+    breeds_df = pd.DataFrame()
 
 @app.get("/")
 def home():
