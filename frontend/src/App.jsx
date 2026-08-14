@@ -4,15 +4,15 @@ import { TypeAnimation } from 'react-type-animation';
 import './App.css';
 
 const breedTraits = {
-    "Ragdoll": { energy: "Low 🛋️", grooming: "High ✂️", vocal: "Low 🤫", description: "Ragdolls are famously affectionate and tend to go totally limp with relaxation when you pick them up. They are gentle, quiet companions." },
-    "Caracal": { energy: "Extreme ⚡", grooming: "Low 👅", vocal: "Moderate 🗣️", description: "A highly athletic wild cat native to Africa and the Middle East, known for their incredible jumping ability and iconic black-tufted ears." },
-    "Savannah": { energy: "High ⚡", grooming: "Low 👅", vocal: "High 🗣️", description: "A cross between a domestic cat and a serval. They are exceptionally intelligent, active, and often behave more like dogs than typical cats." },
-    "Munchkin": { energy: "High ⚡", grooming: "Moderate 🛁", vocal: "Moderate 🗣️", description: "Defined by their surprisingly short legs caused by a natural mutation. Despite their stature, they are incredibly fast and playful." },
-    "Bengal": { energy: "Very High ⚡", grooming: "Low 👅", vocal: "High 🗣️", description: "Bred to look like exotic jungle cats such as leopards. They are highly active, vocal, and require a lot of mental and physical stimulation." },
-    "Sphynx": { energy: "High ⚡", grooming: "High 🧽", vocal: "High 🗣️", description: "Famous for their lack of fur, though they actually have a fine down. They are extroverted, extremely cuddly, and need regular sponge baths." },
-    "British": { energy: "Low 🛋️", grooming: "Moderate 🛁", vocal: "Low 🤫", description: "Known for their dense coats and chunky build. They are calm, easygoing, and incredibly loyal, though not overly demanding of attention." },
-    "Persia": { energy: "Low 🛋️", grooming: "Very High ✂️", vocal: "Low 🤫", description: "Characterized by their round faces and massive coats. They are sweet, docile, and prefer a serene environment to a highly active one." }
-  };
+  "Ragdoll": { energy: "Low 🛋️", grooming: "High ✂️", vocal: "Low 🤫", description: "Ragdolls are famously affectionate and tend to go totally limp with relaxation when you pick them up. They are gentle, quiet companions." },
+  "Caracal": { energy: "Extreme ⚡", grooming: "Low 👅", vocal: "Moderate 🗣️", description: "A highly athletic wild cat native to Africa and the Middle East, known for their incredible jumping ability and iconic black-tufted ears." },
+  "Savannah": { energy: "High ⚡", grooming: "Low 👅", vocal: "High 🗣️", description: "A cross between a domestic cat and a serval. They are exceptionally intelligent, active, and often behave more like dogs than typical cats." },
+  "Munchkin": { energy: "High ⚡", grooming: "Moderate 🛁", vocal: "Moderate 🗣️", description: "Defined by their surprisingly short legs caused by a natural mutation. Despite their stature, they are incredibly fast and playful." },
+  "Bengal": { energy: "Very High ⚡", grooming: "Low 👅", vocal: "High 🗣️", description: "Bred to look like exotic jungle cats such as leopards. They are highly active, vocal, and require a lot of mental and physical stimulation." },
+  "Sphynx": { energy: "High ⚡", grooming: "High 🧽", vocal: "High 🗣️", description: "Famous for their lack of fur, though they actually have a fine down. They are extroverted, extremely cuddly, and need regular sponge baths." },
+  "British": { energy: "Low 🛋️", grooming: "Moderate 🛁", vocal: "Low 🤫", description: "Known for their dense coats and chunky build. They are calm, easygoing, and incredibly loyal, though not overly demanding of attention." },
+  "Persia": { energy: "Low 🛋️", grooming: "Very High ✂️", vocal: "Low 🤫", description: "Characterized by their round faces and massive coats. They are sweet, docile, and prefer a serene environment to a highly active one." }
+};
 
 export default function App() {
   const [currentView, setCurrentView] = useState('intro');
@@ -25,12 +25,21 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBreed, setSelectedBreed] = useState(null);
 
-  // Fetch data on load from Python backend
+  // Fetch data on load with fallback check
   useEffect(() => {
-    fetch('https://cat-website-backend.onrender.com//api/breeds')
+    fetch('https://cat-website-backend.onrender.com/api/breeds')
       .then((res) => res.json())
-      .then((data) => setBreeds(data))
-      .catch((err) => console.error("Error fetching breeds:", err));
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setBreeds(data);
+        } else {
+          setBreeds([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching breeds:", err);
+        setBreeds([]);
+      });
   }, []);
 
   const handleDiagnose = async (e) => {
@@ -39,7 +48,7 @@ export default function App() {
 
     setLoadingDiagnosis(true);
     try {
-      const response = await fetch('https://cat-website-backend.onrender.com//api/diagnose', {
+      const response = await fetch('https://cat-website-backend.onrender.com/api/diagnose', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description: symptomInput }),
@@ -48,14 +57,21 @@ export default function App() {
       setDiagnosisResult(data);
     } catch (error) {
       console.error("Diagnosis error:", error);
+      setDiagnosisResult({
+        prediction: "Could not connect to the backend service. It might be waking up—please try again in 30 seconds.",
+        confidence: "Connection Error"
+      });
     } finally {
       setLoadingDiagnosis(false);
     }
   };
 
-  const filteredBreeds = breeds.filter((b) =>
-    b.Breed_Name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Safe filtering prevents crashes if Breed_Name is missing or undefined
+  const filteredBreeds = Array.isArray(breeds)
+    ? breeds.filter((b) =>
+        (b.Breed_Name || "").toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
 
   // --- Slideshow Logic ---
   const slideshowImages = [
@@ -79,16 +95,15 @@ export default function App() {
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slideshowImages.length);
-    }, 1000);
+    }, 2000);
     
     return () => clearInterval(slideInterval);
-  }, []);
+  }, [slideshowImages.length]);
 
   // --- PAGE ONE: THE CINEMATIC INTRODUCTION ---
   if (currentView === 'intro') {
     return (
       <div className="intro-page-container animate-fade-in">
-        
         <div className="fullscreen-video-bg">
           <video autoPlay loop muted playsInline>
             <source src="/floating-cat.mp4" type="video/mp4" />
@@ -177,7 +192,8 @@ export default function App() {
                 <div className="result-display animate-slide-up">
                   <h3><Activity size={20} /> Analysis Result:</h3>
                   <p className="prediction-text" style={{ whiteSpace: "pre-line" }}>
-                    {diagnosisResult.prediction}</p>
+                    {diagnosisResult.prediction}
+                  </p>
                   <span className="confidence-tag">{diagnosisResult.confidence}</span>
                   <p className="disclaimer">*Always consult a certified veterinarian for official medical evaluations.</p>
                 </div>
@@ -215,7 +231,7 @@ export default function App() {
 
           <div className="breed-grid">
             {filteredBreeds.map((breed) => (
-              <div key={breed.Folder_Name} className="breed-card">
+              <div key={breed.Folder_Name || breed.Breed_Name} className="breed-card">
                 <div className="image-wrapper">
                   <img 
                     src={`/${breed.Folder_Name}.jpg`} 
@@ -234,7 +250,6 @@ export default function App() {
                       View Full Profile
                     </button>
                   </div>
-                  
                 </div>
                 <div className="card-info">
                   <h3>{breed.Breed_Name}</h3>
@@ -243,47 +258,48 @@ export default function App() {
             ))}
           </div>
         </section>
+
         {/* --- POPUP MODAL --- */}
-      {selectedBreed && (
-        <div className="modal-backdrop" onClick={() => setSelectedBreed(null)}>
-          <div className="modal-content animate-fade-in" onClick={(e) => e.stopPropagation()}>
-            <button className="close-modal-btn" onClick={() => setSelectedBreed(null)}>
-              <X size={24} />
-            </button>
+        {selectedBreed && (
+          <div className="modal-backdrop" onClick={() => setSelectedBreed(null)}>
+            <div className="modal-content animate-fade-in" onClick={(e) => e.stopPropagation()}>
+              <button className="close-modal-btn" onClick={() => setSelectedBreed(null)}>
+                <X size={24} />
+              </button>
 
-            <div className="modal-layout">
-              <div className="modal-image">
-                <img 
-                  src={`/${selectedBreed.Folder_Name}.jpg`} 
-                  alt={selectedBreed.Breed_Name} 
-                />
-              </div>
+              <div className="modal-layout">
+                <div className="modal-image">
+                  <img 
+                    src={`/${selectedBreed.Folder_Name}.jpg`} 
+                    alt={selectedBreed.Breed_Name} 
+                  />
+                </div>
 
-              <div className="modal-info">
-                <h2>{selectedBreed.Breed_Name} Profile</h2>
-                <p className="modal-description">
-                  {breedTraits[selectedBreed.Breed_Name]?.description || "No detailed description available for this breed."}
-                </p>
+                <div className="modal-info">
+                  <h2>{selectedBreed.Breed_Name} Profile</h2>
+                  <p className="modal-description">
+                    {breedTraits[selectedBreed.Breed_Name]?.description || "No detailed description available for this breed."}
+                  </p>
 
-                <div className="modal-stats">
-                  <div className="stat-box">
-                    <span className="stat-label">Energy</span>
-                    <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.energy}</span>
-                  </div>
-                  <div className="stat-box">
-                    <span className="stat-label">Grooming</span>
-                    <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.grooming}</span>
-                  </div>
-                  <div className="stat-box">
-                    <span className="stat-label">Vocal</span>
-                    <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.vocal}</span>
+                  <div className="modal-stats">
+                    <div className="stat-box">
+                      <span className="stat-label">Energy</span>
+                      <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.energy}</span>
+                    </div>
+                    <div className="stat-box">
+                      <span className="stat-label">Grooming</span>
+                      <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.grooming}</span>
+                    </div>
+                    <div className="stat-box">
+                      <span className="stat-label">Vocal</span>
+                      <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.vocal}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )};
+        )}
       </main>
     </div>
   );
