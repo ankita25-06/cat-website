@@ -7,9 +7,10 @@ from google import genai
 
 app = FastAPI()
 
-# Read the API key securely from the environment variable (Render / Cloud will provide this)
-gemini_key = os.getenv("AQ.Ab8RN6IUPaqOWC3ZahXqrGM1j73ctkvlqGDKK_MmVwckaly16w")
-client = genai.Client(api_key=gemini_key)
+# 1. Initialize the Gemini Client
+# (Replace the string below with your actual API key from AI Studio)
+
+client = genai.Client(api_key="AQ.Ab8RN6IUPaqOWC3ZahXqrGM1j73ctkvlqGDKK_MmVwckaly16w")
 
 try:
     print("--- AVAILABLE GEMINI MODELS ---")
@@ -32,7 +33,6 @@ try:
     breeds_df = pd.read_csv("cat_breeds_summary.csv")
 except Exception as e:
     print(f"Error loading breeds dataset: {e}")
-    breeds_df = pd.DataFrame()
 
 @app.get("/")
 def home():
@@ -73,7 +73,7 @@ def diagnose_cat(symptoms: SymptomInput):
                 "confidence": "Out of Scope"
             }
 
-    # --- 2. Intelligent Structured Diagnostic via Gemini ---
+    # --- 2. Intelligent Feline Diagnostic via Gemini ---
     system_prompt = f"""
     You are an expert feline veterinary triage assistant.
     A cat owner describes their cat's symptoms as follows:
