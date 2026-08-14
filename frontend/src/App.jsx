@@ -27,7 +27,7 @@ export default function App() {
 
   // Fetch data on load from Python backend
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/breeds')
+    fetch('https://cat-website-backend.onrender.com//api/breeds')
       .then((res) => res.json())
       .then((data) => setBreeds(data))
       .catch((err) => console.error("Error fetching breeds:", err));
@@ -39,7 +39,7 @@ export default function App() {
 
     setLoadingDiagnosis(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/diagnose', {
+      const response = await fetch('https://cat-website-backend.onrender.com//api/diagnose', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description: symptomInput }),
