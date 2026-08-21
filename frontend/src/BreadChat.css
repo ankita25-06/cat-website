@@ -1,0 +1,122 @@
+.breed-chat-card {
+  background: rgba(16, 24, 48, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 24px;
+  margin: 30px auto;
+  max-width: 900px;
+  color: #f1f5f9;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.chat-header h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.35rem;
+  color: #93c5fd;
+}
+
+.chat-header p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin-bottom: 18px;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.chat-input-row input {
+  flex: 1;
+  background: rgba(10, 15, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.chat-input-row input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25);
+}
+
+.chat-input-row button {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.chat-input-row button:hover {
+  opacity: 0.9;
+}
+
+.chat-response-container {
+  display: flex;
+  gap: 20px;
+  background: rgba(8, 12, 28, 0.6);
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  align-items: center;
+}
+
+.breed-image-wrapper {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.breed-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.breed-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #60a5fa;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.breed-text-wrapper {
+  flex: 1;
+}
+
+.chat-bubble p {
+  margin: 0;
+  line-height: 1.6;
+  color: #e2e8f0;
+  white-space: pre-line;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .chat-response-container {
+    flex-direction: column;
+  }
+  .breed-image-wrapper {
+    width: 100%;
+    height: 200px;
+  }
+  .chat-input-row {
+    flex-direction: column;
+  }
+}
