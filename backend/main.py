@@ -19,51 +19,46 @@ app.add_middleware(
 groq_api_key = os.getenv("GROQ_API_KEY")
 groq_client = Groq(api_key=groq_api_key) if groq_api_key else None
 
-# Load breed information for the Breed Explorer
+# 2. Load breed information for the Breed Explorer
 try:
     breeds_df = pd.read_csv("cat_breeds_summary.csv")
 except Exception as e:
     print(f"Error loading breeds dataset: {e}")
     breeds_df = pd.DataFrame()
 
-@app.get("/")
-def home():
-    return {"message": "Welcome to the Cat Health and Breed API"}
+# 3. Comprehensive Breed Image Mapping
+BREED_IMAGES = {
+    "persian": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=600&auto=format&fit=crop",
+    "siamese": "https://images.unsplash.com/photo-1513360309081-38f0762daed1?w=600&auto=format&fit=crop",
+    "maine coon": "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=600&auto=format&fit=crop",
+    "bengal": "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop",
+    "ragdoll": "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600&auto=format&fit=crop",
+    "sphynx": "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=600&auto=format&fit=crop",
+    "british shorthair": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600&auto=format&fit=crop",
+    "abyssinian": "https://images.unsplash.com/photo-1513245543132-31f507417b26?w=600&auto=format&fit=crop",
+    "scottish fold": "https://images.unsplash.com/photo-1561948955-570b270e7c36?w=600&auto=format&fit=crop",
+    "russian blue": "https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=600&auto=format&fit=crop",
+    "birman": "https://images.unsplash.com/photo-1583795128727-6ec3642408f8?w=600&auto=format&fit=crop"
+}
+DEFAULT_CAT_IMAGE = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop"
 
-@app.get("/api/breeds")
-def get_all_breeds():
-    return breeds_df.to_dict(orient="records")
 
+# --- Schemas ---
 class SymptomInput(BaseModel):
     description: str
 
-def generate_health_advice(user_text: str) -> tuple[str, str]:
+class BreedChatInput(BaseModel):
+    query: str
+
+
+# --- Core Helper Functions ---
+def generate_health_advice(prompt: str) -> tuple[str, str]:
     """
     Dynamically discovers available Groq models and queries them with fallback protection.
     """
-    system_prompt = f"""
-A cat owner describes their cat's symptoms as follows:
-"{user_text}"
-
-Provide a clear, structured response using exactly this layout:
-
-🐾 **Likely Condition:** [Name of the condition or general health category]
-
-🔍 **Symptom Insights:** [1-2 concise sentences explaining why these symptoms happen]
-
-🌿 **Supportive Home Care & Remedies:** 
-- [Safe, immediate comfort measure or remedy, e.g., gentle hydration, warm bland food, quiet recovery space]
-- [Practical monitoring tip]
-
-🚨 **When to See a Vet:** [Key red flag warning signs requiring urgent clinical care]
-
-Keep the tone empathetic, concise, and easy to read. Do not recommend prescription drugs.
-"""
-
     if not groq_client:
-        return fallback_diagnosis(user_text), "Local Clinical Rules (Offline Mode)"
+        return fallback_diagnosis(), "Local Clinical Rules (Offline Mode)"
 
-    # Dynamically find available models on your account
     candidate_models = []
     try:
         models_data = groq_client.models.list()
@@ -71,7 +66,6 @@ Keep the tone empathetic, concise, and easy to read. Do not recommend prescripti
     except Exception:
         pass
 
-    # Ensure reliable backup models are listed
     for backup in ["llama-3.1-8b-instant", "llama3-8b-8192", "llama3-70b-8192", "mixtral-8x7b-32768", "gemma2-9b-it"]:
         if backup not in candidate_models:
             candidate_models.append(backup)
@@ -82,11 +76,11 @@ Keep the tone empathetic, concise, and easy to read. Do not recommend prescripti
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are an expert feline veterinary triage assistant. Provide structured guidance for cat health concerns."
+                        "content": "You are an expert feline assistant and veterinary triage specialist. Provide clear, concise, structured responses."
                     },
                     {
                         "role": "user",
-                        "content": system_prompt
+                        "content": prompt
                     }
                 ],
                 model=model_id,
@@ -97,13 +91,12 @@ Keep the tone empathetic, concise, and easy to read. Do not recommend prescripti
             print(f"Model {model_id} failed: {err}")
             continue
 
-    # 3. Graceful offline fallback if all cloud models are unreachable
-    return fallback_diagnosis(user_text), "Veterinary Triage Protocol"
+    return fallback_diagnosis(), "Veterinary Triage Protocol"
 
 
-def fallback_diagnosis(symptom_text: str) -> str:
-    """Built-in offline safety response so the frontend NEVER breaks."""
-    return f"""🐾 **Likely Condition:** Mild Lethargy / Behavioral Shift or Viral Malaise
+def fallback_diagnosis() -> str:
+    """Built-in offline safety response so the frontend never breaks."""
+    return """🐾 **Likely Condition:** Mild Lethargy / Behavioral Shift or Viral Malaise
 
 🔍 **Symptom Insights:** Cats frequently sleep more when recovering from mild infections, reacting to temperature changes, or experiencing mild digestive upset.
 
@@ -114,6 +107,15 @@ def fallback_diagnosis(symptom_text: str) -> str:
 
 🚨 **When to See a Vet:** Seek immediate veterinary care if lethargy is accompanied by complete loss of appetite for >24 hours, persistent vomiting, pale gums, or labored breathing."""
 
+
+# --- Routes ---
+@app.get("/")
+def home():
+    return {"message": "Welcome to the Cat Health and Breed API"}
+
+@app.get("/api/breeds")
+def get_all_breeds():
+    return breeds_df.to_dict(orient="records")
 
 @app.post("/api/diagnose")
 def diagnose_cat(symptoms: SymptomInput):
@@ -144,8 +146,71 @@ def diagnose_cat(symptoms: SymptomInput):
                 "confidence": "Out of Scope"
             }
 
-    diagnosis_text, confidence_label = generate_health_advice(user_text)
+    system_prompt = f"""
+A cat owner describes their cat's symptoms as follows:
+"{user_text}"
+
+Provide a clear, structured response using exactly this layout:
+
+🐾 **Likely Condition:** [Name of the condition or general health category]
+
+🔍 **Symptom Insights:** [1-2 concise sentences explaining why these symptoms happen]
+
+🌿 **Supportive Home Care & Remedies:** 
+- [Safe, immediate comfort measure or remedy, e.g., gentle hydration, warm bland food, quiet recovery space]
+- [Practical monitoring tip]
+
+🚨 **When to See a Vet:** [Key red flag warning signs requiring urgent clinical care]
+
+Keep the tone empathetic, concise, and easy to read. Do not recommend prescription drugs.
+"""
+    diagnosis_text, confidence_label = generate_health_advice(system_prompt)
     return {
         "prediction": diagnosis_text,
         "confidence": confidence_label
+    }
+
+@app.post("/api/breed-chat")
+def breed_chat(payload: BreedChatInput):
+    user_query = payload.query.strip()
+    user_lower = user_query.lower()
+
+    if not user_query:
+        return {
+            "answer": "Ask me anything about cat breeds (e.g. temperament, grooming, or apartment suitability)!",
+            "detected_breed": None,
+            "image_url": DEFAULT_CAT_IMAGE
+        }
+
+    # Identify matched breed
+    detected_breed = None
+    image_url = DEFAULT_CAT_IMAGE
+    for breed_name, img_link in BREED_IMAGES.items():
+        if breed_name in user_lower:
+            detected_breed = breed_name.title()
+            image_url = img_link
+            break
+
+    # Enrich prompt with CSV breed context if available
+    csv_context = ""
+    if detected_breed and not breeds_df.empty:
+        matched_rows = breeds_df[breeds_df['name'].str.lower() == detected_breed.lower()] if 'name' in breeds_df.columns else pd.DataFrame()
+        if not matched_rows.empty:
+            csv_context = f"\nRelevant Dataset Info: {matched_rows.iloc[0].to_dict()}"
+
+    system_prompt = f"""
+You are an expert feline breed specialist.
+Answer this user question about cat breeds clearly, concisely, and accurately:
+"{user_query}"
+{csv_context}
+
+Provide key details on temperament, care needs, or living space recommendations in 2-3 structured bullet points. Keep it engaging and under 120 words.
+"""
+
+    answer_text, _ = generate_health_advice(system_prompt)
+
+    return {
+        "answer": answer_text,
+        "detected_breed": detected_breed,
+        "image_url": image_url
     }
