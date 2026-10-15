@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldAlert, Cat, Search, Activity, ChevronRight, X } from 'lucide-react';
+import { ShieldAlert, Cat, Search, Activity, ChevronRight, X, MapPin, Camera, MessageSquare } from 'lucide-react';
 import { TypeAnimation } from 'react-type-animation';
+import BreedChat from './BreedChat';
 import './App.css';
 
 const breedTraits = {
@@ -14,6 +15,8 @@ const breedTraits = {
   "Persia": { energy: "Low 🛋️", grooming: "Very High ✂️", vocal: "Low 🤫", description: "Characterized by their round faces and massive coats. They are sweet, docile, and prefer a serene environment to a highly active one." }
 };
 
+const BACKEND_URL = "https://cat-website-backend.onrender.com";
+
 export default function App() {
   const [currentView, setCurrentView] = useState('intro');
 
@@ -25,9 +28,15 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBreed, setSelectedBreed] = useState(null);
 
-  // Fetch data on load with fallback check
+  // Vision AI State
+  const [visionFile, setVisionFile] = useState(null);
+  const [visionPreview, setVisionPreview] = useState(null);
+  const [visionLoading, setVisionLoading] = useState(false);
+  const [visionResult, setVisionResult] = useState('');
+
+  // Fetch data on load
   useEffect(() => {
-    fetch('https://cat-website-backend.onrender.com/api/breeds')
+    fetch(`${BACKEND_URL}/api/breeds`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -43,12 +52,12 @@ export default function App() {
   }, []);
 
   const handleDiagnose = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!symptomInput.trim()) return;
 
     setLoadingDiagnosis(true);
     try {
-      const response = await fetch('https://cat-website-backend.onrender.com/api/diagnose', {
+      const response = await fetch(`${BACKEND_URL}/api/diagnose`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description: symptomInput }),
@@ -66,27 +75,65 @@ export default function App() {
     }
   };
 
-  // Safe filtering prevents crashes if Breed_Name is missing or undefined
+  const handleVisionSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setVisionFile(file);
+      setVisionPreview(URL.createObjectURL(file));
+      setVisionResult('');
+    }
+  };
+
+  const handleVisionAnalyze = async (e) => {
+    e.preventDefault();
+    if (!visionFile) return;
+
+    setVisionLoading(true);
+    const formData = new FormData();
+    formData.append('file', visionFile);
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/identify-breed-image`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      setVisionResult(data.analysis);
+    } catch (err) {
+      console.error("Vision AI error:", err);
+      setVisionResult("Failed to identify breed. Please check backend connection.");
+    } finally {
+      setVisionLoading(false);
+    }
+  };
+
+  const openNearbyVets = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          window.open(`https://www.google.com/maps/search/veterinary+clinic/@${latitude},${longitude},14z`, '_blank');
+        },
+        () => {
+          window.open('https://www.google.com/maps/search/veterinary+clinic+near+me', '_blank');
+        }
+      );
+    } else {
+      window.open('https://www.google.com/maps/search/veterinary+clinic+near+me', '_blank');
+    }
+  };
+
   const filteredBreeds = Array.isArray(breeds)
     ? breeds.filter((b) =>
         (b.Breed_Name || "").toLowerCase().includes(searchQuery.toLowerCase())
       )
     : [];
 
-  // --- Slideshow Logic ---
   const slideshowImages = [
-    "/cat-slide (1).jpeg",
-    "/cat-slide (2).jpeg",
-    "/cat-slide (3).jpeg",
-    "/cat-slide (4).jpeg",
-    "/cat-slide (5).jpeg",
-    "/cat-slide (6).jpeg",
-    "/cat-slide (7).jpeg",
-    "/cat-slide (8).jpeg",
-    "/cat-slide (9).jpeg",
-    "/cat-slide (10).jpeg",
-    "/cat-slide (11).jpeg",
-    "/cat-slide (12).jpeg",
+    "/cat-slide (1).jpeg", "/cat-slide (2).jpeg", "/cat-slide (3).jpeg",
+    "/cat-slide (4).jpeg", "/cat-slide (5).jpeg", "/cat-slide (6).jpeg",
+    "/cat-slide (7).jpeg", "/cat-slide (8).jpeg", "/cat-slide (9).jpeg",
+    "/cat-slide (10).jpeg", "/cat-slide (11).jpeg", "/cat-slide (12).jpeg",
     "/cat-slide (13).jpeg"
   ];
   
@@ -96,11 +143,10 @@ export default function App() {
     const slideInterval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slideshowImages.length);
     }, 2000);
-    
     return () => clearInterval(slideInterval);
   }, [slideshowImages.length]);
 
-  // --- PAGE ONE: THE CINEMATIC INTRODUCTION ---
+  // --- PAGE ONE: INTRO ---
   if (currentView === 'intro') {
     return (
       <div className="intro-page-container animate-fade-in">
@@ -141,7 +187,6 @@ export default function App() {
               Enter Experience <ChevronRight size={18} />
             </button>
           </div>
-          
           <div className="hero-space-filler"></div>
         </div>
 
@@ -153,7 +198,7 @@ export default function App() {
     );
   }
 
-  // --- PAGE TWO: THE APPLICATION DATA DASHBOARD ---
+  // --- PAGE TWO: DASHBOARD ---
   return (
     <div className="app-container animate-fade-in">
       <header className="navbar">
@@ -170,29 +215,27 @@ export default function App() {
         {/* Symptom Checker Card */}
         <section className="card-panel symptom-section">
           <div className="symptom-layout-grid">
-            
-            {/* Left Column: The Form */}
             <div className="symptom-form-area">
               <h2><ShieldAlert className="title-icon" /> AI Cat Health Assistant</h2>
-              <p className="subtitle">Describe your cat's behavior or health changes in plain sentences (e.g., "My cat is vomiting and seems very lazy").</p>
+              <p className="subtitle">Describe your cat's behavior or health changes in plain sentences.</p>
               
               <form onSubmit={handleDiagnose} className="symptom-form">
                 <textarea
-                value={symptomInput}
-                onChange={(e) => setSymptomInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleDiagnose(e);
-                  }
-                }}
-                placeholder="Type symptoms here..."
-                rows={5}
+                  value={symptomInput}
+                  onChange={(e) => setSymptomInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleDiagnose(e);
+                    }
+                  }}
+                  placeholder="Type symptoms here..."
+                  rows={5}
                 />
                 <button type="submit" className="button" disabled={loadingDiagnosis}>
                   {loadingDiagnosis ? 'Analyzing Data...' : 'Analyze Health'}
-                  </button>
-                  </form>
+                </button>
+              </form>
 
               {diagnosisResult && (
                 <div className="result-display animate-slide-up">
@@ -200,7 +243,12 @@ export default function App() {
                   <p className="prediction-text" style={{ whiteSpace: "pre-line" }}>
                     {diagnosisResult.prediction}
                   </p>
-                  <span className="confidence-tag">{diagnosisResult.confidence}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginTop: '12px' }}>
+                    <span className="confidence-tag">{diagnosisResult.confidence}</span>
+                    <button onClick={openNearbyVets} className="view-more-btn" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <MapPin size={16} /> Find Nearby Emergency Vet
+                    </button>
+                  </div>
                   <p className="disclaimer">*Always consult a certified veterinarian for official medical evaluations.</p>
                 </div>
               )}
@@ -217,10 +265,40 @@ export default function App() {
               ))}
               <div className="image-overlay-glow"></div>
             </div>
-
           </div>
         </section>
 
+        {/* AI Breed Vision Photo Identifier Card */}
+        <section className="card-panel">
+          <h2><Camera className="title-icon" /> Vision AI Cat Breed Photo Identifier</h2>
+          <p className="subtitle">Upload a photo of any cat to identify its breed and traits instantly.</p>
+          
+          <form onSubmit={handleVisionAnalyze} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+            <input type="file" accept="image/*" onChange={handleVisionSelect} />
+            
+            {visionPreview && (
+              <div style={{ width: '220px', height: '220px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                <img src={visionPreview} alt="Cat Upload Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+            )}
+
+            <button type="submit" className="button" disabled={visionLoading || !visionFile}>
+              {visionLoading ? 'Analyzing Photo...' : 'Identify Breed from Photo'}
+            </button>
+          </form>
+
+          {visionResult && (
+            <div className="result-display animate-slide-up" style={{ marginTop: '1.5rem' }}>
+              <h3>Result:</h3>
+              <p style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}>{visionResult}</p>
+            </div>
+          )}
+        </section>
+
+        {/* Breed Chat Bot Section */}
+        <BreedChat backendUrl={BACKEND_URL} />
+
+        {/* Breed Explorer */}
         <section className="breed-section">
           <div className="breed-header">
             <h2><Cat className="title-icon" /> Breed Explorer</h2>
@@ -265,7 +343,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* --- POPUP MODAL --- */}
+        {/* Modal */}
         {selectedBreed && (
           <div className="modal-backdrop" onClick={() => setSelectedBreed(null)}>
             <div className="modal-content animate-fade-in" onClick={(e) => e.stopPropagation()}>
@@ -290,15 +368,15 @@ export default function App() {
                   <div className="modal-stats">
                     <div className="stat-box">
                       <span className="stat-label">Energy</span>
-                      <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.energy}</span>
+                      <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.energy || "Moderate ⚡"}</span>
                     </div>
                     <div className="stat-box">
                       <span className="stat-label">Grooming</span>
-                      <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.grooming}</span>
+                      <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.grooming || "Moderate 🛁"}</span>
                     </div>
                     <div className="stat-box">
                       <span className="stat-label">Vocal</span>
-                      <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.vocal}</span>
+                      <span className="stat-value">{breedTraits[selectedBreed.Breed_Name]?.vocal || "Moderate 🗣️"}</span>
                     </div>
                   </div>
                 </div>
