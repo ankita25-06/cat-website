@@ -84,6 +84,12 @@ export default function App() {
     }
   };
 
+  const clearVisionSelection = () => {
+  setVisionFile(null);
+  setVisionPreview(null);
+  setVisionResult('');
+};
+
   const handleVisionAnalyze = async (e) => {
     e.preventDefault();
     if (!visionFile) return;
@@ -274,9 +280,9 @@ export default function App() {
   <p className="subtitle">Upload a photo of any cat to identify its breed and traits instantly.</p>
 
   <div className="vision-grid-layout">
-    {/* Left Column: Input and Preview */}
+    {/* Left Column: Clean Input + Preview with Remove Button */}
     <form onSubmit={handleVisionAnalyze} className="vision-left-col">
-      <div className="file-upload-wrapper">
+      <div className="file-input-container">
         <input 
           type="file" 
           id="cat-photo-upload" 
@@ -286,28 +292,41 @@ export default function App() {
         />
         <label htmlFor="cat-photo-upload" className="custom-file-label">
           <Camera size={18} />
-          {visionFile ? "Change Photo" : "Choose Cat Photo"}
+          Choose Cat Photo
         </label>
-        {visionFile && <span className="file-name-text">{visionFile.name}</span>}
       </div>
 
       {visionPreview && (
-        <div className="vision-preview-container">
+        <div className="vision-preview-card">
+          <button 
+            type="button" 
+            className="clear-photo-btn" 
+            onClick={clearVisionSelection}
+            title="Remove Photo"
+          >
+            <X size={16} />
+          </button>
           <img src={visionPreview} alt="Cat Upload Preview" />
         </div>
       )}
 
-      <button type="submit" className="action-btn" disabled={visionLoading || !visionFile}>
+      <button 
+        type="submit" 
+        className="button vision-submit-btn" 
+        disabled={visionLoading || !visionFile}
+      >
         {visionLoading ? 'Analyzing Photo...' : 'Identify Breed from Photo'}
       </button>
     </form>
 
-    {/* Right Column: AI Analysis Result Box */}
+    {/* Right Column: AI Result Box */}
     <div className="vision-right-col">
       {visionResult ? (
-        <div className="result-display animate-slide-up vision-result-box">
-          <h3><Activity size={20} /> Identification Result:</h3>
-          <p style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}>{visionResult}</p>
+        <div className="vision-result-box animate-slide-up">
+          <h3><Activity size={20} className="title-icon" /> Identification Result:</h3>
+          <div className="vision-result-content">
+            <p style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}>{visionResult}</p>
+          </div>
         </div>
       ) : (
         <div className="vision-placeholder-box">
@@ -318,6 +337,9 @@ export default function App() {
     </div>
   </div>
 </section>
+
+
+  
 
 
         {/* Breed Chat Bot Section */}
