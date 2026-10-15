@@ -269,31 +269,43 @@ export default function App() {
         </section>
 
         {/* AI Breed Vision Photo Identifier Card */}
-        <section className="card-panel">
-          <h2><Camera className="title-icon" /> Vision AI Cat Breed Photo Identifier</h2>
-          <p className="subtitle">Upload a photo of any cat to identify its breed and traits instantly.</p>
-          
-          <form onSubmit={handleVisionAnalyze} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-            <input type="file" accept="image/*" onChange={handleVisionSelect} />
-            
-            {visionPreview && (
-              <div style={{ width: '220px', height: '220px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)' }}>
-                <img src={visionPreview} alt="Cat Upload Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-            )}
+<section className="card-panel vision-section">
+  <h2><Camera className="title-icon" /> Vision AI Cat Breed Photo Identifier</h2>
+  <p className="subtitle">Upload a photo of any cat to identify its breed and traits instantly.</p>
 
-            <button type="submit" className="button" disabled={visionLoading || !visionFile}>
-              {visionLoading ? 'Analyzing Photo...' : 'Identify Breed from Photo'}
-            </button>
-          </form>
+  <form onSubmit={handleVisionAnalyze} className="vision-form">
+    <div className="file-upload-wrapper">
+      <input 
+        type="file" 
+        id="cat-photo-upload" 
+        accept="image/*" 
+        onChange={handleVisionSelect} 
+        className="file-input-hidden" 
+      />
+      <label htmlFor="cat-photo-upload" className="custom-file-label">
+        <Camera size={18} />
+        {visionFile ? visionFile.name : "Choose Cat Photo"}
+      </label>
+    </div>
 
-          {visionResult && (
-            <div className="result-display animate-slide-up" style={{ marginTop: '1.5rem' }}>
-              <h3>Result:</h3>
-              <p style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}>{visionResult}</p>
-            </div>
-          )}
-        </section>
+    {visionPreview && (
+      <div className="vision-preview-container">
+        <img src={visionPreview} alt="Cat Upload Preview" />
+      </div>
+    )}
+
+    <button type="submit" className="action-btn" disabled={visionLoading || !visionFile}>
+      {visionLoading ? 'Analyzing Photo...' : 'Identify Breed from Photo'}
+    </button>
+  </form>
+
+  {visionResult && (
+    <div className="result-display animate-slide-up" style={{ marginTop: '1.5rem' }}>
+      <h3>Analysis Result:</h3>
+      <p style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}>{visionResult}</p>
+    </div>
+  )}
+</section>
 
         {/* Breed Chat Bot Section */}
         <BreedChat backendUrl={BACKEND_URL} />
