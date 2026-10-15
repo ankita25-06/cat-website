@@ -623,75 +623,58 @@ body {
   }
 }
 
-/* --- Vision AI Section Styling --- */
-.vision-form {
+/* --- Vision AI Side-by-Side Grid --- */
+.vision-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin-top: 1.5rem;
+}
+
+.vision-left-col {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  margin-top: 1.5rem;
-  max-width: 480px;
 }
 
-.file-input-hidden {
-  display: none;
+.file-name-text {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  margin-top: 6px;
+  word-break: break-all;
 }
 
-.custom-file-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: #93a1f32d;
-  border: 1px dashed var(--accent);
-  color: var(--text-light);
-  padding: 0.85rem 1.25rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  width: fit-content;
-}
-
-.custom-file-label:hover {
-  background-color: rgba(56, 189, 248, 0.2);
-  border-color: #ffffff;
-}
-
-.vision-preview-container {
-  width: 200px;
-  height: 200px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-}
-
-.vision-preview-container img {
+.vision-right-col {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
-.action-btn {
-  background-color: var(--accent);
-  color: #000000;
-  border: none;
-  padding: 0.85rem 1.5rem;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: fit-content;
+.vision-result-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  min-height: 250px;
 }
 
-.action-btn:hover:not(:disabled) {
-  background-color: var(--accent-hover);
-  transform: translateY(-2px);
+.vision-placeholder-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  min-height: 250px;
+  color: var(--text-main);
 }
 
-.action-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
+@media (max-width: 900px) {
+  .vision-grid-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
