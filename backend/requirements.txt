@@ -3,4 +3,5 @@ uvicorn
 pydantic
 pandas
 google-genai
+python-multipart
 groq
