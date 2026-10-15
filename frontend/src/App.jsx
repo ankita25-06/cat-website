@@ -279,15 +279,22 @@ export default function App() {
   <h2><Camera className="title-icon" /> Vision AI Cat Breed Photo Identifier</h2>
   <p className="subtitle">Upload a photo of any cat to identify its breed and traits instantly.</p>
 
-  <div className="vision-grid-layout">
-    {/* Left Column: Clean Input + Preview with Remove Button */}
+  <div className={`vision-grid-layout ${visionResult ? 'has-result' : 'no-result'}`}>
+    {/* Left Column: Input + Photo + Button */}
     <form onSubmit={handleVisionAnalyze} className="vision-left-col">
       <div className="file-input-container">
         <input 
           type="file" 
           id="cat-photo-upload" 
           accept="image/*" 
-          onChange={handleVisionSelect} 
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (file) {
+              setVisionFile(file);
+              setVisionPreview(URL.createObjectURL(file));
+              setVisionResult('');
+            }
+          }} 
           className="file-input-hidden" 
         />
         <label htmlFor="cat-photo-upload" className="custom-file-label">
@@ -312,29 +319,25 @@ export default function App() {
 
       <button 
         type="submit" 
-        className="button vision-submit-btn" 
+        className="button action-explore-btn" 
+        style={{ width: 'fit-content', height: 'auto', padding: '10px 20px' }}
         disabled={visionLoading || !visionFile}
       >
         {visionLoading ? 'Analyzing Photo...' : 'Identify Breed from Photo'}
       </button>
     </form>
 
-    {/* Right Column: AI Result Box */}
-    <div className="vision-right-col">
-      {visionResult ? (
-        <div className="vision-result-box animate-slide-up">
+    {/* Right Column: Appears ONLY when visionResult has content */}
+    {visionResult && (
+      <div className="vision-right-col animate-slide-up">
+        <div className="vision-result-box">
           <h3><Activity size={20} className="title-icon" /> Identification Result:</h3>
           <div className="vision-result-content">
             <p style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}>{visionResult}</p>
           </div>
         </div>
-      ) : (
-        <div className="vision-placeholder-box">
-          <Camera size={40} style={{ opacity: 0.4, marginBottom: '10px' }} />
-          <p>Upload a cat photo and click <strong>Identify Breed</strong> to view AI traits and analysis here.</p>
-        </div>
-      )}
-    </div>
+      </div>
+    )}
   </div>
 </section>
 
