@@ -58,13 +58,13 @@ export default function App() {
             />
 
             <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-              <button className="action-explore-btn" onClick={() => setCurrentView('health')}>
-                Explore Health Hub <ChevronRight size={18} />
-              </button>
-              <button className="action-explore-btn" onClick={() => setCurrentView('breed')} style={{ background: 'transparent', border: '1px solid var(--accent)' }}>
-                Explore Breed Hub <ChevronRight size={18} />
-              </button>
-            </div>
+  <button className="action-explore-btn" onClick={() => setCurrentView('health')}>
+    Explore Health Hub <ChevronRight size={18} />
+  </button>
+  <button className="action-explore-btn" onClick={() => setCurrentView('breed')}>
+    Explore Breed Hub <ChevronRight size={18} />
+  </button>
+</div>
           </div>
           <div className="hero-space-filler"></div>
         </div>
