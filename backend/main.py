@@ -1,5 +1,6 @@
 import os
-from fastapi import FastAPI
+import base64
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
@@ -53,9 +54,6 @@ class BreedChatInput(BaseModel):
 
 # --- Core Helper Functions ---
 def generate_health_advice(prompt: str) -> tuple[str, str]:
-    """
-    Dynamically discovers available Groq models and queries them with fallback protection.
-    """
     if not groq_client:
         return fallback_diagnosis(), "Local Clinical Rules (Offline Mode)"
 
@@ -95,7 +93,6 @@ def generate_health_advice(prompt: str) -> tuple[str, str]:
 
 
 def fallback_diagnosis() -> str:
-    """Built-in offline safety response so the frontend never breaks."""
     return """🐾 **Likely Condition:** Mild Lethargy / Behavioral Shift or Viral Malaise
 
 🔍 **Symptom Insights:** Cats frequently sleep more when recovering from mild infections, reacting to temperature changes, or experiencing mild digestive upset.
@@ -128,7 +125,6 @@ def diagnose_cat(symptoms: SymptomInput):
             "confidence": "None"
         }
 
-    # Guardrails: Non-feline checks
     other_animals = ["dog", "puppy", "bird", "hamster", "rabbit", "snake", "turtle"]
     for animal in other_animals:
         if animal in user_lower and "cat" not in user_lower:
@@ -137,7 +133,6 @@ def diagnose_cat(symptoms: SymptomInput):
                 "confidence": "Out of Scope"
             }
 
-    # Guardrails: Human symptom checks
     human_phrases = ["i am having", "i have", "i'm having", "my head", "my stomach", "i feel"]
     for phrase in human_phrases:
         if phrase in user_lower and "cat" not in user_lower:
@@ -182,7 +177,6 @@ def breed_chat(payload: BreedChatInput):
             "image_url": DEFAULT_CAT_IMAGE
         }
 
-    # Identify matched breed
     detected_breed = None
     image_url = DEFAULT_CAT_IMAGE
     for breed_name, img_link in BREED_IMAGES.items():
@@ -191,7 +185,6 @@ def breed_chat(payload: BreedChatInput):
             image_url = img_link
             break
 
-    # Enrich prompt with CSV breed context if available
     csv_context = ""
     if detected_breed and not breeds_df.empty:
         matched_rows = breeds_df[breeds_df['name'].str.lower() == detected_breed.lower()] if 'name' in breeds_df.columns else pd.DataFrame()
@@ -214,3 +207,27 @@ Provide key details on temperament, care needs, or living space recommendations 
         "detected_breed": detected_breed,
         "image_url": image_url
     }
+
+# --- NEW: Vision AI Breed Identifier ---
+@app.post("/api/identify-breed-image")
+async def identify_breed_image(file: UploadFile = File(...)):
+    if not groq_client:
+        return {"analysis": "Groq client not initialized."}
+
+    try:
+        contents = await file.read()
+        base64_image = base64.b64encode(contents).decode('utf-8')
+
+        response = groq_client.chat.completions.create(
+            model="llama-3.2-11b-vision-preview",
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "Analyze this image and identify the cat breed. Provide: 1. Predicted Breed, 2. Key Physical Features, 3. Brief Care Insight. Keep it under 100 words."},
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
+                ]
+            }]
+        )
+        return {"analysis": response.choices[0].message.content}
+    except Exception as e:
+        return {"analysis": f"Vision analysis unavailable: {str(e)}"}
