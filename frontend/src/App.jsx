@@ -178,15 +178,21 @@ export default function App() {
               
               <form onSubmit={handleDiagnose} className="symptom-form">
                 <textarea
-                  value={symptomInput}
-                  onChange={(e) => setSymptomInput(e.target.value)}
-                  placeholder="Type symptoms here..."
-                  rows={5}
+                value={symptomInput}
+                onChange={(e) => setSymptomInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleDiagnose(e);
+                  }
+                }}
+                placeholder="Type symptoms here..."
+                rows={5}
                 />
                 <button type="submit" className="button" disabled={loadingDiagnosis}>
                   {loadingDiagnosis ? 'Analyzing Data...' : 'Analyze Health'}
-                </button>
-              </form>
+                  </button>
+                  </form>
 
               {diagnosisResult && (
                 <div className="result-display animate-slide-up">
