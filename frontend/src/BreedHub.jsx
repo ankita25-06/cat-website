@@ -23,8 +23,8 @@ export default function BreedHub({ backendUrl, breeds }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBreed, setSelectedBreed] = useState(null);
 
-  // Adoption Quiz State
-  const [quizStep, setQuizStep] = useState(1);
+  // Adoption Quiz Wizard State
+  const [currentSlide, setCurrentSlide] = useState(1);
   const [matchedResult, setMatchedResult] = useState('');
   const [quizAnswers, setQuizAnswers] = useState({
     home: 'apartment',
@@ -74,22 +74,30 @@ export default function BreedHub({ backendUrl, breeds }) {
     setQuizAnswers(prev => ({ ...prev, [field]: value }));
   };
 
-  const calculateMatch = (e) => {
-    if (e) e.preventDefault();
-
-    if (quizAnswers.home === 'apartment' && (quizAnswers.dailyTime === '<1' || quizAnswers.motivation === 'cuddle')) {
-      setMatchedResult("Persian or Ragdoll — Soft, calm, and affectionate lap cats that adapt perfectly to indoor apartment living!");
-    } else if (quizAnswers.motivation === 'active' || quizAnswers.dailyTime === '2+') {
-      setMatchedResult("Bengal or Savannah — High-energy, athletic, and intelligent breeds that thrive on interactive play and stimulation!");
-    } else if (quizAnswers.children === 'yes' || quizAnswers.pets === 'yes') {
-      setMatchedResult("British Shorthair or Maine Coon — Patient, sturdy, and gentle breeds renowned for getting along wonderfully with kids and other pets!");
-    } else if (quizAnswers.reason === 'vocal') {
-      setMatchedResult("Siamese — Extremely talkative, social, and expressive companions that love communicating with their owners!");
+  const handleNextSlide = () => {
+    if (currentSlide < 10) {
+      setCurrentSlide(prev => prev + 1);
     } else {
-      setMatchedResult("American Shorthair or Scottish Fold — Easygoing, sweet, adaptable, and balanced companions for any home!");
+      // Calculate match result on final submission
+      if (quizAnswers.home === 'apartment' && (quizAnswers.dailyTime === '<1' || quizAnswers.motivation === 'cuddle')) {
+        setMatchedResult("Persian or Ragdoll — Soft, calm, and affectionate lap cats that adapt perfectly to indoor apartment living!");
+      } else if (quizAnswers.motivation === 'active' || quizAnswers.dailyTime === '2+') {
+        setMatchedResult("Bengal or Savannah — High-energy, athletic, and intelligent breeds that thrive on interactive play and stimulation!");
+      } else if (quizAnswers.children === 'yes' || quizAnswers.pets === 'yes') {
+        setMatchedResult("British Shorthair or Maine Coon — Patient, sturdy, and gentle breeds renowned for getting along wonderfully with kids and other pets!");
+      } else if (quizAnswers.reason === 'vocal') {
+        setMatchedResult("Siamese — Extremely talkative, social, and expressive companions that love communicating with their owners!");
+      } else {
+        setMatchedResult("American Shorthair or Scottish Fold — Easygoing, sweet, adaptable, and balanced companions for any home!");
+      }
+      setCurrentSlide(11); // Result slide
     }
+  };
 
-    setQuizStep(2);
+  const handlePrevSlide = () => {
+    if (currentSlide > 1) {
+      setCurrentSlide(prev => prev - 1);
+    }
   };
 
   const filteredBreeds = Array.isArray(breeds)
@@ -194,155 +202,172 @@ export default function BreedHub({ backendUrl, breeds }) {
         </div>
       </section>
 
-      {/* 3. Comprehensive 10-Question Adoption Quiz */}
-      <section className="card-panel" style={{ marginTop: '3rem', border: '1px dashed var(--accent)' }}>
-        <h3>🏡 Do you want to adopt a cat? Let's find your purrfect match!</h3>
-        <p className="subtitle">Answer these 10 lifestyle questions to find the ideal cat breed for your home and routine.</p>
+      {/* 3. Step-by-Step Slide Quiz Wizard */}
+      <section className="card-panel" style={{ marginTop: '3rem', border: '1px dashed var(--accent)', maxWidth: '650px', marginLeft: 'auto', marginRight: 'auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <h3 style={{ margin: 0 }}>🏡 Do you want to adopt a cat? Let's find your purrfect match!</h3>
+          {currentSlide <= 10 && (
+            <span style={{ fontSize: '0.85rem', color: 'var(--accent)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Question {currentSlide} of 10</span>
+          )}
+        </div>
+        <p className="subtitle">Take our quick interactive lifestyle quiz to find your ideal cat breed match.</p>
 
-        {quizStep === 1 ? (
-          <form onSubmit={calculateMatch} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem', marginTop: '1.5rem' }}>
-            
-            {/* Question 1 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>1. Your Home</label>
-              <select 
-                value={quizAnswers.home} 
-                onChange={(e) => handleQuizChange('home', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="apartment">Cozy Apartment / Studio</option>
-                <option value="house">Spacious House / Yard Access</option>
-              </select>
-            </div>
+        {/* Slide 1 */}
+        {currentSlide === 1 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>1. Your Home</label>
+            <select 
+              value={quizAnswers.home} 
+              onChange={(e) => handleQuizChange('home', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="apartment">Cozy Apartment / Studio</option>
+              <option value="house">Spacious House / Yard Access</option>
+            </select>
+          </div>
+        )}
 
-            {/* Question 2 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>2. Time at Home</label>
-              <select 
-                value={quizAnswers.timeAtHome} 
-                onChange={(e) => handleQuizChange('timeAtHome', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="fulltime">Work from Home / Always around</option>
-                <option value="moderate">4–8 Hours Away (Standard workday)</option>
-                <option value="long">8+ Hours Away (Travel / Busy schedule)</option>
-              </select>
-            </div>
+        {/* Slide 2 */}
+        {currentSlide === 2 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>2. Time at Home</label>
+            <select 
+              value={quizAnswers.timeAtHome} 
+              onChange={(e) => handleQuizChange('timeAtHome', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="fulltime">Work from Home / Always around</option>
+              <option value="moderate">4–8 Hours Away (Standard workday)</option>
+              <option value="long">8+ Hours Away (Travel / Busy schedule)</option>
+            </select>
+          </div>
+        )}
 
-            {/* Question 3 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>3. Adoption Reason</label>
-              <select 
-                value={quizAnswers.reason} 
-                onChange={(e) => handleQuizChange('reason', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="companionship">Emotional Companionship 💖</option>
-                <option value="vocal">Interactive & Vocal Buddy 🗣️</option>
-                <option value="lowmaintenance">Quiet & Independent Friend 🛋️</option>
-              </select>
-            </div>
+        {/* Slide 3 */}
+        {currentSlide === 3 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>3. Adoption Reason</label>
+            <select 
+              value={quizAnswers.reason} 
+              onChange={(e) => handleQuizChange('reason', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="companionship">Emotional Companionship 💖</option>
+              <option value="vocal">Interactive & Vocal Buddy 🗣️</option>
+              <option value="lowmaintenance">Quiet & Independent Friend 🛋️</option>
+            </select>
+          </div>
+        )}
 
-            {/* Question 4 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>4. Children at Home?</label>
-              <select 
-                value={quizAnswers.children} 
-                onChange={(e) => handleQuizChange('children', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="no">No Children</option>
-                <option value="yes">Yes (Young Kids / Toddlers)</option>
-              </select>
-            </div>
+        {/* Slide 4 */}
+        {currentSlide === 4 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>4. Children at Home?</label>
+            <select 
+              value={quizAnswers.children} 
+              onChange={(e) => handleQuizChange('children', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="no">No Children</option>
+              <option value="yes">Yes (Young Kids / Toddlers)</option>
+            </select>
+          </div>
+        )}
 
-            {/* Question 5 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>5. Other Pets?</label>
-              <select 
-                value={quizAnswers.pets} 
-                onChange={(e) => handleQuizChange('pets', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="no">Single Pet Household</option>
-                <option value="yes">Yes (Dogs or other cats)</option>
-              </select>
-            </div>
+        {/* Slide 5 */}
+        {currentSlide === 5 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>5. Other Pets?</label>
+            <select 
+              value={quizAnswers.pets} 
+              onChange={(e) => handleQuizChange('pets', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="no">Single Pet Household</option>
+              <option value="yes">Yes (Dogs or other cats)</option>
+            </select>
+          </div>
+        )}
 
-            {/* Question 6 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>6. Household Members On Board?</label>
-              <select 
-                value={quizAnswers.householdAgreed} 
-                onChange={(e) => handleQuizChange('householdAgreed', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="yes">Yes, everyone agrees!</option>
-                <option value="unsure">Still discussing</option>
-              </select>
-            </div>
+        {/* Slide 6 */}
+        {currentSlide === 6 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>6. Household Members On Board?</label>
+            <select 
+              value={quizAnswers.householdAgreed} 
+              onChange={(e) => handleQuizChange('householdAgreed', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="yes">Yes, everyone agrees!</option>
+              <option value="unsure">Still discussing</option>
+            </select>
+          </div>
+        )}
 
-            {/* Question 7 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>7. Committed to Lifelong Vet Care (15–20 yrs)?</label>
-              <select 
-                value={quizAnswers.vetCommitment} 
-                onChange={(e) => handleQuizChange('vetCommitment', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="yes">Yes, fully committed</option>
-                <option value="unsure">Uncertain about long-term</option>
-              </select>
-            </div>
+        {/* Slide 7 */}
+        {currentSlide === 7 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>7. Committed to Lifelong Vet Care (15–20 yrs)?</label>
+            <select 
+              value={quizAnswers.vetCommitment} 
+              onChange={(e) => handleQuizChange('vetCommitment', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="yes">Yes, fully committed</option>
+              <option value="unsure">Uncertain about long-term</option>
+            </select>
+          </div>
+        )}
 
-            {/* Question 8 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>8. Financially Prepared for Ownership Costs?</label>
-              <select 
-                value={quizAnswers.financialPrepared} 
-                onChange={(e) => handleQuizChange('financialPrepared', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="yes">Yes (Food, litter, vet, emergency fund)</option>
-                <option value="budget">Working on a budget</option>
-              </select>
-            </div>
+        {/* Slide 8 */}
+        {currentSlide === 8 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>8. Financially Prepared for Ownership Costs?</label>
+            <select 
+              value={quizAnswers.financialPrepared} 
+              onChange={(e) => handleQuizChange('financialPrepared', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="yes">Yes (Food, litter, vet, emergency fund)</option>
+              <option value="budget">Working on a budget</option>
+            </select>
+          </div>
+        )}
 
-            {/* Question 9 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>9. Daily Time for Care & Attention</label>
-              <select 
-                value={quizAnswers.dailyTime} 
-                onChange={(e) => handleQuizChange('dailyTime', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="<1">Less than 1 hour / day</option>
-                <option value="1-2">1 to 2 hours / day</option>
-                <option value="2+">2+ hours / day (Active play & grooming)</option>
-              </select>
-            </div>
+        {/* Slide 9 */}
+        {currentSlide === 9 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>9. Daily Time for Care & Attention</label>
+            <select 
+              value={quizAnswers.dailyTime} 
+              onChange={(e) => handleQuizChange('dailyTime', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="<1">Less than 1 hour / day</option>
+              <option value="1-2">1 to 2 hours / day</option>
+              <option value="2+">2+ hours / day (Active play & grooming)</option>
+            </select>
+          </div>
+        )}
 
-            {/* Question 10 */}
-            <div>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: 500 }}>10. Main Motivation for Adopting</label>
-              <select 
-                value={quizAnswers.motivation} 
-                onChange={(e) => handleQuizChange('motivation', e.target.value)}
-                style={{ width: '100%', padding: '10px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b' }}
-              >
-                <option value="cuddle">Quiet cuddle & relaxation partner 🛋️</option>
-                <option value="active">Energetic playmate & training 🎾</option>
-                <option value="family">Loving family addition 👨‍👩‍👧</option>
-              </select>
-            </div>
+        {/* Slide 10 */}
+        {currentSlide === 10 && (
+          <div className="animate-fade-in" style={{ marginTop: '1.5rem' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '1.05rem' }}>10. Main Motivation for Adopting</label>
+            <select 
+              value={quizAnswers.motivation} 
+              onChange={(e) => handleQuizChange('motivation', e.target.value)}
+              style={{ width: '100%', padding: '12px', background: '#0f172a', color: '#fff', borderRadius: '8px', border: '1px solid #1e293b', fontSize: '1rem' }}
+            >
+              <option value="cuddle">Quiet cuddle & relaxation partner 🛋️</option>
+              <option value="active">Energetic playmate & training 🎾</option>
+              <option value="family">Loving family addition 👨‍👩‍👧</option>
+            </select>
+          </div>
+        )}
 
-            <div style={{ gridColumn: 'span 2', marginTop: '10px' }}>
-              <button type="submit" className="button" style={{ width: 'fit-content' }}>
-                Get My Purrfect Match!
-              </button>
-            </div>
-          </form>
-        ) : (
+        {/* Slide 11: Results */}
+        {currentSlide === 11 && (
           <div className="animate-slide-up" style={{ marginTop: '1.5rem', padding: '2rem', background: 'rgba(56, 189, 248, 0.1)', borderRadius: '12px', textAlign: 'center' }}>
             <h4 style={{ color: 'var(--accent)', fontSize: '1.25rem', marginBottom: '10px' }}>✨ Your Recommended Breed Match:</h4>
             <p style={{ fontSize: '1.15rem', fontWeight: 'bold', lineHeight: '1.6' }}>{matchedResult}</p>
@@ -352,15 +377,40 @@ export default function BreedHub({ backendUrl, breeds }) {
                 ✓ Great readiness score! You meet all financial and care commitments for cat adoption.
               </p>
             )}
+          </div>
+        )}
 
+        {/* Wizard Controls */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2rem' }}>
+          {currentSlide > 1 && currentSlide <= 10 && (
             <button 
-              onClick={() => setQuizStep(1)} 
-              style={{ background: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)', padding: '8px 18px', borderRadius: '6px', marginTop: '18px', cursor: 'pointer' }}
+              type="button" 
+              onClick={handlePrevSlide} 
+              style={{ background: 'transparent', border: '1px solid #475569', color: '#cbd5e1', padding: '8px 18px', borderRadius: '6px', cursor: 'pointer' }}
+            >
+              Back
+            </button>
+          )}
+
+          {currentSlide <= 10 ? (
+            <button 
+              type="button" 
+              onClick={handleNextSlide} 
+              className="button" 
+              style={{ marginLeft: 'auto' }}
+            >
+              {currentSlide === 10 ? 'Get My Purrfect Match!' : 'Next Question ➔'}
+            </button>
+          ) : (
+            <button 
+              type="button" 
+              onClick={() => setCurrentSlide(1)} 
+              style={{ background: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)', padding: '8px 18px', borderRadius: '6px', cursor: 'pointer', margin: '0 auto' }}
             >
               Retake Quiz
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </section>
 
       {/* Modal for Breed Explorer */}
