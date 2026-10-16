@@ -6,6 +6,7 @@ from pydantic import BaseModel
 import pandas as pd
 from google import genai
 from google.genai import types
+from groq import Groq
 
 gemini_client = genai.Client() if os.getenv("GEMINI_API_KEY") else None
 
