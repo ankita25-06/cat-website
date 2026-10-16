@@ -117,12 +117,12 @@ async def identify_breed_image(file: UploadFile = File(...)):
     try:
         contents = await file.read()
         if not contents:
-            return {"analysis": "⚠️ Please upload a valid image file."}
+            return {"analysis": "⚠️ Please try to upload image properly."}
 
         if not gemini_client:
-            return {"analysis": "⚠️ GEMINI_API_KEY is missing in backend environment variables."}
+            return {"analysis": "⚠️ Please try to upload image properly."}
 
-        # Attempt to call Gemini Flash with fallback handling
+        # Attempt to call Gemini Flash
         try:
             response = gemini_client.models.generate_content(
                 model='gemini-3.8-flash',
@@ -142,17 +142,11 @@ async def identify_breed_image(file: UploadFile = File(...)):
             if response and response.text:
                 return {"analysis": response.text}
         except Exception as model_err:
-            print(f"Gemini overloaded or unavailable: {model_err}")
+            print(f"Gemini error: {model_err}")
 
-        # Graceful fallback response if Gemini is experiencing high demand
-        return {
-            "analysis": (
-                "🐾 **Predicted Breed:** Domestic Shorthair Mix (AI High-Demand Mode)\n\n"
-                "🔍 **Key Physical Features:** Beautiful coat coloration with distinct facial markings, alert posture, and expressive eyes.\n\n"
-                "🌿 **Care Insight:** The server is currently experiencing temporary high AI traffic. Please try clicking 'Identify Breed from Photo' again in 10 seconds!"
-            )
-        }
+        # Fallback if any error occurs
+        return {"analysis": "⚠️ Please try to upload image properly."}
 
     except Exception as general_err:
         print(f"Backend error: {str(general_err)}")
-        return {"analysis": f"⚠️ Image processing error: {str(general_err)}"}
+        return {"analysis": "⚠️ Please try to upload image properly."}
