@@ -124,7 +124,7 @@ async def identify_breed_image(file: UploadFile = File(...)):
 
         # Use Gemini Flash for fast, accurate image understanding
         response = gemini_client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.8-flash',
             contents=[
                 types.Part.from_bytes(
                     data=contents,
