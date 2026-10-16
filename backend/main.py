@@ -4,9 +4,10 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
-from groq import Groq
+from google import genai
+from google.genai import types
 
-client = Groq()
+gemini_client = genai.Client() if os.getenv("GEMINI_API_KEY") else None
 
 app = FastAPI()
 
@@ -117,15 +118,31 @@ async def identify_breed_image(file: UploadFile = File(...)):
         if not contents:
             return {"analysis": "⚠️ Please upload a valid image file."}
 
-        # Structured diagnostic breed analysis response
-        analysis_result = (
-            "🐾 **Predicted Breed:** Domestic Shorthair / Calico Mix\n\n"
-            "🔍 **Key Physical Features:** Distinctive multi-colored coat pattern with balanced symmetrical markings, bright alert eyes, and healthy posture.\n\n"
-            "🌿 **Care Insight:** Regular weekly brushing helps maintain coat health. Thrives on interactive puzzle toys and standard balanced nutrition."
+        if not gemini_client:
+            return {"analysis": "⚠️ GEMINI_API_KEY is missing in backend environment variables."}
+
+        # Use Gemini Flash for fast, accurate image understanding
+        response = gemini_client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=[
+                types.Part.from_bytes(
+                    data=contents,
+                    mime_type=file.content_type or "image/jpeg",
+                ),
+                (
+                    "Analyze this image of a cat in detail and provide a structured breakdown with the following format:\n"
+                    "🐾 **Predicted Breed:** [Specific Breed Name or Mix]\n\n"
+                    "🔍 **Key Physical Features:** [Specific coat color, pattern, eye color, and facial structure visible in this exact image]\n\n"
+                    "🌿 **Care Insight:** [Tailored care, grooming, and health advice for this specific breed type]"
+                ),
+            ],
         )
 
-        return {"analysis": analysis_result}
+        if response.text:
+            return {"analysis": response.text}
+        else:
+            return {"analysis": "⚠️ Could not generate an analysis for this image. Please try another photo."}
 
     except Exception as general_err:
-        print(f"Backend error: {str(general_err)}")
+        print(f"Gemini Vision Error: {str(general_err)}")
         return {"analysis": f"⚠️ Image processing error: {str(general_err)}"}
