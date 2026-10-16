@@ -6,6 +6,8 @@ from pydantic import BaseModel
 import pandas as pd
 from groq import Groq
 
+client = Groq()
+
 app = FastAPI()
 
 app.add_middleware(
@@ -110,10 +112,59 @@ def breed_chat(payload: BreedChatInput):
 
 @app.post("/api/identify-breed-image")
 async def identify_breed_image(file: UploadFile = File(...)):
-    # Fallback response guarantee so the frontend always gets an answer box successfully rendered
-    analysis_result = (
-        "🐾 **Predicted Breed:** Siamese Cat Mix\n\n"
-        "🔍 **Key Physical Features:** Distinctive point coloration on ears, face, and paws, sleek short coat, and vivid blue almond-shaped eyes.\n\n"
-        "🌿 **Care Insight:** Highly social, vocal, and intelligent. They thrive on frequent interactive play and human companionship."
-    )
-    return {"analysis": analysis_result}
+    try:
+        # 1. Read file bytes and convert to base64
+        contents = await file.read()
+        base64_image = base64.b64encode(contents).decode('utf-8')
+        image_url = f"data:{file.content_type};base64,{base64_image}"
+
+        # 2. Vision model fallback sequence
+        vision_models = [
+            "llama-3.2-11b-vision-instruct",
+            "llama-3.2-90b-vision-preview"
+        ]
+
+        prompt_text = (
+            "Analyze this image of a cat in detail and provide a structured breakdown with the following format:\n"
+            "🐾 **Predicted Breed:** [Breed Name / Mix]\n\n"
+            "🔍 **Key Physical Features:** [Specific coat pattern, eye color, ear shape, and physical structure visible in image]\n\n"
+            "🌿 **Care Insight:** [Specific care, exercise, and health advice tailored to this breed]"
+        )
+
+        analysis_result = None
+
+        for model_name in vision_models:
+            try:
+                response = client.chat.completions.create(
+                    model=model_name,
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": [
+                                {"type": "text", "text": prompt_text},
+                                {
+                                    "type": "image_url",
+                                    "image_url": {"url": image_url}
+                                }
+                            ]
+                        }
+                    ],
+                    max_tokens=500,
+                    temperature=0.2
+                )
+                analysis_result = response.choices[0].message.content
+                if analysis_result:
+                    break
+            except Exception as e:
+                print(f"Model {model_name} failed: {e}")
+                continue
+
+        # 3. Return live analysis or clear error message if model calls failed
+        if analysis_result:
+            return {"analysis": analysis_result}
+        else:
+            return {"analysis": "⚠️ Unable to identify the breed from this image. Please try uploading a clearer photo."}
+
+    except Exception as general_err:
+        print(f"Backend processing error: {general_err}")
+        return {"analysis": f"⚠️ Image processing error: {str(general_err)}"}

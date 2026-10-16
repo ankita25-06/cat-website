@@ -60,11 +60,23 @@ export default function BreedHub({ backendUrl, breeds }) {
         method: 'POST',
         body: formData,
       });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
       const data = await response.json();
-      setVisionResult(data.analysis);
+      // Look for analysis, prediction, or result keys returned from FastAPI
+      const resultText = data.analysis || data.prediction || data.result;
+
+      if (resultText) {
+        setVisionResult(resultText);
+      } else {
+        setVisionResult("⚠️ Received empty response from AI model. Please try again.");
+      }
     } catch (err) {
       console.error("Vision AI error:", err);
-      setVisionResult("🐾 **Predicted Breed:** Siamese Cat Mix\n\n🔍 **Key Features:** Dark point markings and blue eyes.\n\n🌿 **Care Insight:** Highly social and vocal.");
+      setVisionResult("⚠️ Connection error or server waking up. Please wait 15 seconds and try uploading your photo again.");
     } finally {
       setVisionLoading(false);
     }
