@@ -113,15 +113,17 @@ def breed_chat(payload: BreedChatInput):
 @app.post("/api/identify-breed-image")
 async def identify_breed_image(file: UploadFile = File(...)):
     try:
-        # 1. Read file bytes and convert to base64
+        if not groq_client:
+            return {"analysis": "⚠️ GROQ_API_KEY is missing in backend environment settings."}
+
         contents = await file.read()
         base64_image = base64.b64encode(contents).decode('utf-8')
         image_url = f"data:{file.content_type};base64,{base64_image}"
 
-        # 2. Vision model fallback sequence
+        # Updated active vision model IDs on Groq
         vision_models = [
             "llama-3.2-11b-vision-instruct",
-            "llama-3.2-90b-vision-preview"
+            "meta-llama/llama-3.2-11b-vision-instruct"
         ]
 
         prompt_text = (
@@ -135,7 +137,7 @@ async def identify_breed_image(file: UploadFile = File(...)):
 
         for model_name in vision_models:
             try:
-                response = client.chat.completions.create(
+                response = groq_client.chat.completions.create(
                     model=model_name,
                     messages=[
                         {
@@ -156,15 +158,14 @@ async def identify_breed_image(file: UploadFile = File(...)):
                 if analysis_result:
                     break
             except Exception as e:
-                print(f"Model {model_name} failed: {e}")
+                print(f"Model {model_name} error: {e}")
                 continue
 
-        # 3. Return live analysis or clear error message if model calls failed
         if analysis_result:
             return {"analysis": analysis_result}
         else:
-            return {"analysis": "⚠️ Unable to identify the breed from this image. Please try uploading a clearer photo."}
+            return {"analysis": "⚠️ Groq vision API is currently unreachable. Please check your GROQ_API_KEY rate limits."}
 
     except Exception as general_err:
-        print(f"Backend processing error: {general_err}")
+        print(f"Backend error: {general_err}")
         return {"analysis": f"⚠️ Image processing error: {str(general_err)}"}
