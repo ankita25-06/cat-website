@@ -110,7 +110,41 @@ def diagnose_cat(symptoms: SymptomInput):
 @app.post("/api/breed-chat")
 def breed_chat(payload: BreedChatInput):
     user_query = payload.query.strip()
-    return {"answer": "Expert feline response generated.", "detected_breed": "Siamese", "image_url": DEFAULT_CAT_IMAGE}
+    if not user_query:
+        return {"answer": "Please ask a question about cat care or breeds.", "detected_breed": "General", "image_url": DEFAULT_CAT_IMAGE}
+
+    try:
+        if gemini_client:
+            # Use Gemini to generate a warm, conversational care suggestion
+            response = gemini_client.models.generate_content(
+                model='gemini-3.8-flash',
+                contents=(
+                    f"A cat owner is asking for advice/suggestions: '{user_query}'. "
+                    "Provide a warm, structured, and helpful response with practical care steps, tips, or breed suggestions."
+                )
+            )
+            if response and response.text:
+                return {
+                    "answer": response.text,
+                    "detected_breed": "Feline Care Expert",
+                    "image_url": DEFAULT_CAT_IMAGE
+                }
+    except Exception as e:
+        print(f"Chat AI error: {e}")
+
+    # Fallback suggestion response if needed
+    return {
+        "answer": (
+            "🐾 **Here are some essential steps to take great care of your cat:**\n\n"
+            "1. **Nutrition:** Provide fresh water daily and high-quality balanced wet/dry food tailored to their age.\n"
+            "2. **Grooming:** Brush their coat regularly to prevent hairballs and maintain skin health.\n"
+            "3. **Environment:** Create cozy vertical resting spaces, scratching posts, and interactive playtime sessions.\n"
+            "4. **Healthcare:** Keep up with routine vet checkups and vaccinations!"
+        ),
+        "detected_breed": "General Care",
+        "image_url": DEFAULT_CAT_IMAGE
+    }
+ generated.", "detected_breed": "Siamese", "image_url": DEFAULT_CAT_IMAGE}
 
 @app.post("/api/identify-breed-image")
 async def identify_breed_image(file: UploadFile = File(...)):
