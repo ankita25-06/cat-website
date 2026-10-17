@@ -8,7 +8,12 @@ from google import genai
 from google.genai import types
 from groq import Groq
 
-gemini_client = genai.Client() if os.getenv("GEMINI_API_KEY") else None
+# Initialize AI Clients
+gemini_api_key = os.getenv("GEMINI_API_KEY")
+gemini_client = genai.Client(api_key=gemini_api_key) if gemini_api_key else None
+
+groq_api_key = os.getenv("GROQ_API_KEY")
+groq_client = Groq(api_key=groq_api_key) if groq_api_key else None
 
 app = FastAPI()
 
@@ -19,10 +24,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Initialize Groq Client
-groq_api_key = os.getenv("GROQ_API_KEY")
-groq_client = Groq(api_key=groq_api_key) if groq_api_key else None
 
 # Load breed information for the Breed Explorer
 try:
@@ -51,6 +52,9 @@ class SymptomInput(BaseModel):
     description: str
 
 class BreedChatInput(BaseModel):
+    query: str
+
+class CareChatInput(BaseModel):
     query: str
 
 
@@ -115,7 +119,6 @@ def breed_chat(payload: BreedChatInput):
 
     try:
         if gemini_client:
-            # Use Gemini to generate a warm, conversational care suggestion
             response = gemini_client.models.generate_content(
                 model='gemini-3.8-flash',
                 contents=(
@@ -132,7 +135,6 @@ def breed_chat(payload: BreedChatInput):
     except Exception as e:
         print(f"Chat AI error: {e}")
 
-    # Fallback suggestion response if needed
     return {
         "answer": (
             "🐾 **Here are some essential steps to take great care of your cat:**\n\n"
@@ -144,7 +146,36 @@ def breed_chat(payload: BreedChatInput):
         "detected_breed": "General Care",
         "image_url": DEFAULT_CAT_IMAGE
     }
- generated.", "detected_breed": "Siamese", "image_url": DEFAULT_CAT_IMAGE}
+
+@app.post("/api/care-chat")
+def care_chat(payload: CareChatInput):
+    user_query = payload.query.strip()
+    if not user_query:
+        return {"response": "Please ask a question about cat care, feeding, or daily tips."}
+
+    try:
+        if gemini_client:
+            response = gemini_client.models.generate_content(
+                model='gemini-3.8-flash',
+                contents=(
+                    f"A cat owner is asking for general care suggestions: '{user_query}'. "
+                    "Provide a warm, practical, and structured response with helpful tips, care steps, or lifestyle advice for cats."
+                )
+            )
+            if response and response.text:
+                return {"response": response.text}
+    except Exception as e:
+        print(f"Care chat error: {e}")
+
+    return {
+        "response": (
+            "🐾 **Here are some great general steps to take care of your cat:**\n\n"
+            "1. **Nutrition & Hydration:** Provide fresh water daily and balanced wet/dry food.\n"
+            "2. **Grooming:** Brush their coat regularly to reduce hairballs and keep their skin healthy.\n"
+            "3. **Play & Enrichment:** Set up scratching posts, vertical perches, and interactive toy sessions.\n"
+            "4. **Routine Checkups:** Schedule regular veterinary visits to stay updated on vaccinations."
+        )
+    }
 
 @app.post("/api/identify-breed-image")
 async def identify_breed_image(file: UploadFile = File(...)):
@@ -156,7 +187,6 @@ async def identify_breed_image(file: UploadFile = File(...)):
         if not gemini_client:
             return {"analysis": "⚠️ Please try to upload image properly."}
 
-        # Attempt to call Gemini Flash
         try:
             response = gemini_client.models.generate_content(
                 model='gemini-3.8-flash',
@@ -178,7 +208,6 @@ async def identify_breed_image(file: UploadFile = File(...)):
         except Exception as model_err:
             print(f"Gemini error: {model_err}")
 
-        # Fallback if any error occurs
         return {"analysis": "⚠️ Please try to upload image properly."}
 
     except Exception as general_err:
